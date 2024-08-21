@@ -1,0 +1,92 @@
+.sidebar {
+    width: 250px;
+    transition: width 0.3s;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+  }
+  
+  .sidebar.collapsed {
+    width: 80px;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+  }
+  
+  .logo {
+    height: 40px;
+    transition: height 0.3s;
+  }
+  
+  .logo.collapsed {
+    height: 30px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .sidebar-content {
+    flex: 1;
+    padding: 15px;
+  }
+  
+  .clinic-info {
+    margin-bottom: 20px;
+  }
+  
+  .clinic-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .clinic-address {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .nav-menu ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav-menu li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    gap: 8px;
+  }
+  
+  .nav-menu li:hover,
+  .nav-menu li.active {
+    background-color: #f1f1f1;
+  }
+  
+  .nav-menu li .icon {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  .section-title {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #888;
+  }
+  

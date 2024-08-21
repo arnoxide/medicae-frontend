@@ -1,0 +1,123 @@
+.dashboard {
+    padding: 20px;
+    flex: 1; /* Ensure it takes the remaining space */
+  }
+  
+  .dashboard-header {
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  .dashboard-header p {
+    color: #666;
+  }
+  
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .large-card {
+    grid-column: span 2;
+  }
+  
+  .chart-container {
+    height: 200px;
+  }
+  
+  .patients-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .patients-info div {
+    text-align: center;
+  }
+  
+  .patients-info p {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .patients-info span {
+    color: #666;
+  }
+  
+  /* Scoped ul li styles for Dashboard */
+  .dashboard-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .dashboard-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+  }
+  
+  .dashboard-list li span {
+    background: #4caf50;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .stock-info {
+    margin-bottom: 10px;
+  }
+  
+  .stock-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .status.available {
+    background: #4caf50;
+  }
+  
+  .status.low {
+    background: #ff9800;
+  }
+  
+  .status.out {
+    background: #f44336;
+  }
+  
+  .low-stock p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .low-stock a {
+    color: #4c84ff;
+    text-decoration: none;
+  }
+  
+  .low-stock a:hover {
+    text-decoration: underline;
+  }
+  
