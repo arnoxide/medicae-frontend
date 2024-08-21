@@ -8,7 +8,7 @@ const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
-        <img src="/path/to/logo.png" alt="Logo" className={`logo ${isCollapsed ? 'collapsed' : ''}`} />
+        <img src="https://ideogram.ai/assets/progressive-image/balanced/response/TZvRGYdrRf6zRxq5-Z2C9A" alt="Logo" className={`logo ${isCollapsed ? 'collapsed' : ''}`} />
         {!isCollapsed && <span className="title">Medicae</span>}
         <button onClick={toggleSidebar} className="toggle-btn">
           {isCollapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}

@@ -32,7 +32,7 @@ const Topbar = ({ heading, isSidebarCollapsed }) => {
         </div>
         <div className="separator"></div>
         <div className="user-profile" onClick={toggleDropdown}>
-          <img src="/path/to/profile.jpg" alt="User" className="user-image" />
+          <img src="https://i.pinimg.com/564x/03/eb/d6/03ebd625cc0b9d636256ecc44c0ea324.jpg" alt="User" className="user-image" />
           <div className="user-info">
             <span className="user-name">Masutha Arnold</span>
             <FaCaretDown className="dropdown-icon" />
