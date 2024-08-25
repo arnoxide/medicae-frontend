@@ -21,7 +21,7 @@ const Dashboard = () => {
     labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
     datasets: [
       {
-        label: 'Cashflow',
+        label: 'Death tools',
         data: [2000, 4000, 3000, 5000, 7000, 10000, 8000, 9000, 11000, 12000, 13000, 14000],
         borderColor: '#4c84ff',
         backgroundColor: 'rgba(76, 132, 255, 0.1)',
@@ -34,12 +34,12 @@ const Dashboard = () => {
     labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'],
     datasets: [
       {
-        label: 'Total Income',
+        label: 'HIV',
         data: [5000, 10000, 7000, 8000, 9000, 11000],
         backgroundColor: '#4caf50',
       },
       {
-        label: 'Total Expenses',
+        label: 'TB',
         data: [2000, 3000, 4000, 5000, 6000, 7000],
         backgroundColor: '#ff9800',
       },
@@ -47,7 +47,7 @@ const Dashboard = () => {
   };
 
   const doughnutData = {
-    labels: ['Rental Cost', 'Wages', 'Medical Equipment', 'Supplies', 'Promotion Costs', 'Other'],
+    labels: ['files', 'queus', 'Medical Equipment', 'Supplies', 'Promotion Costs', 'Other'],
     datasets: [
       {
         data: [30, 22, 20, 18, 8, 2],
@@ -64,13 +64,13 @@ const Dashboard = () => {
       </div>
       <div className="dashboard-content">
         <div className="card large-card">
-          <h3>Cashflow</h3>
+          <h3>Death tolls</h3>
           <div className="chart-container">
             <Line data={lineData} />
           </div>
         </div>
         <div className="card">
-          <h3>Income & Expense</h3>
+          <h3>Diseases ratings</h3>
           <div className="chart-container">
             <Bar data={barData} />
           </div>

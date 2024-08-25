@@ -3,6 +3,17 @@ import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Dashboard from './components/Dashboard';
 import './App.css';
+import Reservations from './components/Reservations';
+import Patients from './components/Patients';
+import Treatments from './components/Treatments';
+import StaffList from './components/StaffList';
+import Accounts from './components/Accounts';
+import Purchases from './components/Purchases';
+import PaymentMethods from './components/PaymentMethods';
+import Stocks from './components/Stocks';
+import MedicineDeliveryManagement from './components/MedicineDeliveryManagement';
+import Reports from './components/Reports';
+import PatientFiles from './components/PatientFiles';
 
 function App() {
   const [page, setPage] = useState('Dashboard');
@@ -15,7 +26,17 @@ function App() {
         <Topbar heading={page} isSidebarCollapsed={isSidebarCollapsed} />
         <div className="content">
           {page === 'Dashboard' && <Dashboard />}
-          {/* Add more components for other pages as needed */}
+          {page === 'Reservations' && <Reservations />}
+          {page === 'Patients' && <Patients />}
+          {page === 'Treatments' && <Treatments />}
+          {page === 'StaffList' && <StaffList />}
+          {page === 'Accounts' && <Accounts />}
+          {page === 'Purchases' && <Purchases />}
+          {page === 'PaymentMethods' && <PaymentMethods />}
+          {page === 'Stocks' && <Stocks />}
+          {page === 'MedicineDeliveryManagement' && <MedicineDeliveryManagement />}
+          {page === 'Reports' && <Reports />}
+          {page === 'PatientFiles' && <PatientFiles />}
         </div>
       </div>
     </div>

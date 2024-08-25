@@ -1,0 +1,175 @@
+.patient-files {
+    padding: 20px;
+    flex: 1; /* Ensure it takes the remaining space */
+  }
+  
+  .files-header {
+    margin-bottom: 20px;
+  }
+  
+  .files-header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  .collapsible-panel {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .collapsible-header h3 {
+    margin: 0;
+  }
+  
+  .arrow {
+    width: 10px;
+    height: 10px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .arrow.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  
+  .arrow.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+  
+  .files-form {
+    margin-top: 20px;
+  }
+  
+  .files-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .files-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .files-form .form-group input,
+  .files-form .form-group select,
+  .files-form .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: #4c84ff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3a6fd8;
+  }
+  
+  button.edit {
+    margin-right: 5px;
+  }
+  
+  button.edit:hover {
+    background-color: #3a6fd8;
+  }
+  
+  button.delete {
+    background-color: #ff4c4c;
+  }
+  
+  button.delete:hover {
+    background-color: #d83a3a;
+  }
+  
+  button.cancel-button {
+    background-color: #ff4c4c;
+  }
+  
+  button.cancel-button:hover {
+    background-color: #d83a3a;
+  }
+  
+  .files-list {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .files-list h3 {
+    margin-top: 0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #f8f9fa;
+  }
+  
+  .patient-details {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .patient-details h3 {
+    margin-top: 0;
+  }
+  
+  .modal {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  

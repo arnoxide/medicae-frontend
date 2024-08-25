@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Sidebar.css';
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaClinicMedical, FaCalendarCheck, FaUserFriends, FaStethoscope, FaUserMd, FaMoneyBill, FaChartLine, FaShoppingCart, FaCreditCard, FaWarehouse, FaHeadset, FaFileAlt } from 'react-icons/fa';
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaClinicMedical, FaCalendarCheck, FaUserFriends, FaStethoscope, FaUserMd, FaMoneyBill, FaChartLine, FaShoppingCart, FaCreditCard, FaWarehouse, FaHeadset, FaFileAlt, FaFile } from 'react-icons/fa';
 
 const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
@@ -30,19 +30,23 @@ const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
               {!isCollapsed && <span>Dashboard</span>}
             </li>
             <li className="section-title">{!isCollapsed && 'CLINIC'}</li>
-            <li onClick={() => setPage('Reservations')} className={page === 'Reservations' ? 'active' : ''}>
-              <FaCalendarCheck />
-              {!isCollapsed && <span>Reservations</span>}
+            <li className={page === 'Reservations' ? 'active' : ''} onClick={() => setPage('Reservations')}>
+            <FaCalendarCheck />
+              Reservations
             </li>
-            <li onClick={() => setPage('Patients')} className={page === 'Patients' ? 'active' : ''}>
-              <FaUserFriends />
-              {!isCollapsed && <span>Patients</span>}
+            <li className={page === 'Patients' ? 'active' : ''} onClick={() => setPage('Patients')}>
+            <FaUserFriends />
+              Patients
             </li>
-            <li onClick={() => setPage('Treatments')} className={page === 'Treatments' ? 'active' : ''}>
+            <li className={page === 'PatientFiles' ? 'active' : ''} onClick={() => setPage('PatientFiles')}>
+            <FaFile />
+              Patients Files
+            </li>
+            <li className={page === 'Treatments' ? 'active' : ''} onClick={() => setPage('Treatments')} >
               <FaStethoscope />
               {!isCollapsed && <span>Treatments</span>}
             </li>
-            <li onClick={() => setPage('Staff List')} className={page === 'Staff List' ? 'active' : ''}>
+            <li  className={page === 'StaffList' ? 'active' : ''} onClick={() => setPage('StaffList')}>
               <FaUserMd />
               {!isCollapsed && <span>Staff List</span>}
             </li>
@@ -51,15 +55,11 @@ const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
               <FaMoneyBill />
               {!isCollapsed && <span>Accounts</span>}
             </li>
-            <li onClick={() => setPage('Sales')} className={page === 'Sales' ? 'active' : ''}>
-              <FaChartLine />
-              {!isCollapsed && <span>Sales</span>}
-            </li>
             <li onClick={() => setPage('Purchases')} className={page === 'Purchases' ? 'active' : ''}>
               <FaShoppingCart />
               {!isCollapsed && <span>Purchases</span>}
             </li>
-            <li onClick={() => setPage('Payment Method')} className={page === 'Payment Method' ? 'active' : ''}>
+            <li onClick={() => setPage('PaymentMethods')} className={page === 'PaymentMethods' ? 'active' : ''}>
               <FaCreditCard />
               {!isCollapsed && <span>Payment Method</span>}
             </li>
@@ -68,12 +68,12 @@ const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
               <FaWarehouse />
               {!isCollapsed && <span>Stocks</span>}
             </li>
-            <li onClick={() => setPage('Peripherals')} className={page === 'Peripherals' ? 'active' : ''}>
+            <li onClick={() => setPage('MedicineDeliveryManagement')} className={page === 'MedicineDeliveryManagement' ? 'active' : ''}>
               <FaHeadset />
-              {!isCollapsed && <span>Peripherals</span>}
+              {!isCollapsed && <span>Delivery Management</span>}
             </li>
             <li className="section-title">{!isCollapsed && 'OTHERS'}</li>
-            <li onClick={() => setPage('Report')} className={page === 'Report' ? 'active' : ''}>
+            <li onClick={() => setPage('Reports')} className={page === 'Reports' ? 'active' : ''}>
               <FaFileAlt />
               {!isCollapsed && <span>Report</span>}
             </li>

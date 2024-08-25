@@ -1,0 +1,74 @@
+.patients {
+    padding: 20px;
+    flex: 1; /* Ensure it takes the remaining space */
+  }
+  
+  .patients-header {
+    margin-bottom: 20px;
+  }
+  
+  .patients-header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  .patients-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .patients-controls input,
+  .patients-controls select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .patients-list {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #f8f9fa;
+  }
+  
+  .patients-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .patients-pagination button {
+    background-color: #4c84ff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .patients-pagination button.active {
+    background-color: #3a6fd8;
+  }
+  
+  .patients-pagination button:hover {
+    background-color: #3a6fd8;
+  }
+  
