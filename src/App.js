@@ -14,10 +14,16 @@ import Stocks from './components/Stocks';
 import MedicineDeliveryManagement from './components/MedicineDeliveryManagement';
 import Reports from './components/Reports';
 import PatientFiles from './components/PatientFiles';
+import Login from './components/Login';
 
 function App() {
   const [page, setPage] = useState('Dashboard');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  if (!isLoggedIn) {
+    return <Login onLogin={() => setIsLoggedIn(true)} />;
+  }
 
   return (
     <div className="App">
