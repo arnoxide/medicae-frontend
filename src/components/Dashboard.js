@@ -59,7 +59,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Good evening, Arnold!</h1>
+        <h1>Good evening, Nduvho!</h1>
         <p>Wednesday, December 6, 2022</p>
       </div>
       <div className="dashboard-content">
