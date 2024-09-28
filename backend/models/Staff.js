@@ -20,6 +20,8 @@ const staffSchema = new Schema({
   workingHours: { type: String, required: true },
   supervisor: { type: String },
   status: { type: String, required: true },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 
 module.exports = mongoose.model('Staff', staffSchema);

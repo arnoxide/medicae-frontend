@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['receptionist', 'nurse', 'doctor', 'admin'],
         required: true
+    },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Date
     }
 });
 

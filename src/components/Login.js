@@ -101,6 +101,7 @@ const Login = ({ onLogin }) => {
         {error && <div className="error-message">{error}</div>}
         <button type="submit">Login</button>
       </form>
+      <button onClick={() => navigate('/forgot-password')}>Forgot Password?</button>
     </div>
   );
 };

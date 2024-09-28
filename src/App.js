@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Topbar from './components/Topbar';
 import './App.css';
 import AdminDashboard from './components/AdminDashboard';
@@ -8,58 +8,19 @@ import NursesDashboard from './components/NursesDashboard';
 import ReceptionistDashboard from './components/ReceptionistDashboard';
 import PatientsDashboard from './components/PatientsDashboard';
 import Login from './components/Login';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
+import { LoaderProvider, useLoader } from './components/LoaderContext'; // Import the context
+import Loader from './components/Loader'; // Import the loader component
 
 const ProtectedRoute = ({ element, ...rest }) => {
   const isAuthenticated = localStorage.getItem('token');
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
 
-const PageWrapper = ({ children }) => {
-  const location = useLocation();
-  const [page, setPage] = useState('');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-  useEffect(() => {
-    const path = location.pathname;
-    let pageName = '';
-
-    switch (path) {
-      case '/admin':
-        pageName = 'Admin Dashboard';
-        break;
-      case '/doctor':
-        pageName = 'Doctors Dashboard';
-        break;
-      case '/nurse':
-        pageName = 'Nurses Dashboard';
-        break;
-      case '/receptionist':
-        pageName = 'Receptionist Dashboard';
-        break;
-      case '/patient':
-        pageName = 'Patients Dashboard';
-        break;
-      default:
-        pageName = 'Dashboard';
-    }
-    setPage(pageName);
-  }, [location.pathname]);
-
-  return (
-    <>
-      {localStorage.getItem('token') && location.pathname !== '/login' && (
-        <Topbar heading={page} isSidebarCollapsed={isSidebarCollapsed} onLogout={() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('role');
-          window.location.href = '/login';
-        }} />
-      )}
-      {children}
-    </>
-  );
-};
-
 function App() {
+  const [page, setPage] = useState('Dashboard');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
 
@@ -77,25 +38,38 @@ function App() {
     setUserRole(role);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    setIsLoggedIn(false);
+    setUserRole('');
+  };
+
   return (
-    <Router>
-      <div className="App">
-        <PageWrapper>
+    <LoaderProvider>
+      <Router>
+        <div className="App">
+          {isLoggedIn && window.location.pathname !== '/login' && (
+            <Topbar heading={page} isSidebarCollapsed={isSidebarCollapsed} onLogout={handleLogout} />
+          )}
           <div className="content">
             <Routes>
-              <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
-              <Route path="/doctor" element={<ProtectedRoute element={<DoctorsDashboard />} />} />
-              <Route path="/nurse" element={<ProtectedRoute element={<NursesDashboard />} />} />
-              <Route path="/receptionist" element={<ProtectedRoute element={<ReceptionistDashboard />} />} />
-              <Route path="/patient" element={<ProtectedRoute element={<PatientsDashboard />} />} />
+              <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard onLogout={handleLogout} />} />} />
+              <Route path="/doctor" element={<ProtectedRoute element={<DoctorsDashboard onLogout={handleLogout} />} />} />
+              <Route path="/nurse" element={<ProtectedRoute element={<NursesDashboard onLogout={handleLogout} />} />} />
+              <Route path="/receptionist" element={<ProtectedRoute element={<ReceptionistDashboard onLogout={handleLogout} />} />} />
+              <Route path="/patient" element={<ProtectedRoute element={<PatientsDashboard onLogout={handleLogout} />} />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/" element={<Navigate to={`/${userRole.toLowerCase()}`} />} />
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
-              <Route path="*" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
+              <Route path="*" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'}/>} />
             </Routes>
           </div>
-        </PageWrapper>
-      </div>
-    </Router>
+        </div>
+        <Loader /> {/* Add the Loader component here */}
+      </Router>
+    </LoaderProvider>
   );
 }
 

@@ -7,7 +7,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const patientRoutes = require('./routes/patientRoutes');
-const staffRoutes = require('./routes/staffRoutes'); // Ensure this is imported
+const staffRoutes = require('./routes/staffRoutes');
 
 const app = express();
 
@@ -30,4 +30,3 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .catch((error) => {
     console.log('Error connecting to the database:', error);
   });
-``
