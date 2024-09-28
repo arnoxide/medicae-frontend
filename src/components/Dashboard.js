@@ -102,22 +102,7 @@ const Dashboard = () => {
             <li>General Checkup <span>4.6</span></li>
           </ul>
         </div>
-        <div className="card">
-          <h3>Stock Availability</h3>
-          <div className="stock-info">
-            <p>Total Asset: <strong>$53,000</strong></p>
-            <p>Total Product: <strong>442</strong></p>
-          </div>
-          <div className="stock-status">
-            <div className="status available"></div> Available
-            <div className="status low"></div> Low Stock
-            <div className="status out"></div> Out of Stock
-          </div>
-          <div className="low-stock">
-            <p>Dental Brush <span>Qty: 3</span> <a href="#">Order</a></p>
-            <p>Charmflex Regular <span>Qty: 2</span> <a href="#">Order</a></p>
-          </div>
-        </div>
+ 
       </div>
     </div>
   );

@@ -32,10 +32,10 @@ const Reservations = () => {
   return (
     <div className="reservations">
       <div className="reservations-header">
-        <h1>Reservations</h1>
+        <h1>Appointment</h1>
       </div>
       <div className="reservations-form">
-        <h3>Add New Reservation</h3>
+        <h3>Add New Appointment</h3>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Name</label>
@@ -79,9 +79,9 @@ const Reservations = () => {
         </form>
       </div>
       <div className="reservations-list">
-        <h3>Existing Reservations</h3>
+        <h3>Existing Appointment</h3>
         {reservations.length === 0 ? (
-          <p>No reservations yet.</p>
+          <p>No Appointment yet.</p>
         ) : (
           <table>
             <thead>

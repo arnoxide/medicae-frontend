@@ -32,7 +32,7 @@ const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
             <li className="section-title">{!isCollapsed && 'CLINIC'}</li>
             <li className={page === 'Reservations' ? 'active' : ''} onClick={() => setPage('Reservations')}>
             <FaCalendarCheck />
-              Reservations
+              Appointment
             </li>
             <li className={page === 'Patients' ? 'active' : ''} onClick={() => setPage('Patients')}>
             <FaUserFriends />
@@ -42,27 +42,12 @@ const Sidebar = ({ page, setPage, isCollapsed, setIsCollapsed }) => {
             <FaFile />
               Patients Files
             </li>
-            <li className={page === 'Treatments' ? 'active' : ''} onClick={() => setPage('Treatments')} >
-              <FaStethoscope />
-              {!isCollapsed && <span>Treatments</span>}
-            </li>
+           
             <li  className={page === 'StaffList' ? 'active' : ''} onClick={() => setPage('StaffList')}>
               <FaUserMd />
               {!isCollapsed && <span>Staff List</span>}
             </li>
-            <li className="section-title">{!isCollapsed && 'FINANCE'}</li>
-            <li onClick={() => setPage('Accounts')} className={page === 'Accounts' ? 'active' : ''}>
-              <FaMoneyBill />
-              {!isCollapsed && <span>Accounts</span>}
-            </li>
-            <li onClick={() => setPage('Purchases')} className={page === 'Purchases' ? 'active' : ''}>
-              <FaShoppingCart />
-              {!isCollapsed && <span>Purchases</span>}
-            </li>
-            <li onClick={() => setPage('PaymentMethods')} className={page === 'PaymentMethods' ? 'active' : ''}>
-              <FaCreditCard />
-              {!isCollapsed && <span>Payment Method</span>}
-            </li>
+           
             <li className="section-title">{!isCollapsed && 'PHYSICAL ASSET'}</li>
             <li onClick={() => setPage('Stocks')} className={page === 'Stocks' ? 'active' : ''}>
               <FaWarehouse />

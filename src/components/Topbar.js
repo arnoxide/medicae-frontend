@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Topbar.css';
 import { FaSearch, FaPlus, FaQuestionCircle, FaHeartbeat, FaCog, FaFlag, FaCaretDown } from 'react-icons/fa';
 
-const Topbar = ({ heading, isSidebarCollapsed }) => {
+const Topbar = ({ heading, isSidebarCollapsed, onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -41,7 +41,7 @@ const Topbar = ({ heading, isSidebarCollapsed }) => {
                 <ul>
                   <li>Profile</li>
                   <li>Settings</li>
-                  <li>Logout</li>
+                  <li onClick={onLogout}>Logout</li>
                 </ul>
               </div>
             )}

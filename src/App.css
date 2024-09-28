@@ -1,9 +1,4 @@
-.App {
-    display: flex;
-  }
-  
-  .main-content {
-    margin-left: 250px;
+.main-content {
     width: calc(100% - 250px);
     transition: margin-left 0.3s, width 0.3s;
   }
@@ -14,7 +9,6 @@
   }
   
   .content {
-    padding: 20px;
     background-color: #f8f9fa; /* Light background color */
     min-height: 100vh; /* Ensure it covers the entire viewport height */
   }
