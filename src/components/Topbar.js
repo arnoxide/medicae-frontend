@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import '../styles/Topbar.css';
 import { FaSearch, FaPlus, FaQuestionCircle, FaHeartbeat, FaCog, FaFlag, FaCaretDown } from 'react-icons/fa';
 
-const Topbar = ({ heading, isSidebarCollapsed, onLogout }) => {
+const roleColors = {
+  admin: '#4a90e2',
+  doctor: '#58b368',
+  nurse: '#f5a623',
+  receptionist: '#018749',
+  patient: '#9013fe'
+};
+
+const Topbar = ({ heading, role, isSidebarCollapsed, onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -10,7 +18,7 @@ const Topbar = ({ heading, isSidebarCollapsed, onLogout }) => {
   };
 
   return (
-    <div className={`topbar ${isSidebarCollapsed ? 'full-width' : ''}`}>
+    <div className={`topbar ${isSidebarCollapsed ? 'full-width' : ''}`} style={{ backgroundColor: roleColors[role.toLowerCase()] }}>
       <div className="page-heading">
         <h2>{heading}</h2>
       </div>

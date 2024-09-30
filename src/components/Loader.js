@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLoader } from './LoaderContext';
-import loaderGif from '../assets/images/loader.gif'; // Adjust the path as necessary
-import '../styles/Loader.css'; // Create this CSS file for styling
+import loaderGif from '../assets/images/loader.gif';
+import '../styles/Loader.css';
 
 
 const Loader = () => {

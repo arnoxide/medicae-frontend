@@ -9,6 +9,7 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
         address,
         phoneNumber,
         email,
+        gender, // Include gender in the request
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -33,7 +35,6 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
       console.error('Error response:', error.response.data); // Improved logging
     }
   };
-  
 
   return (
     <div className="modal-overlay">
@@ -94,6 +95,19 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+          </div>
+          <div className="form-group">
+            <label>Gender</label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
           </div>
           <button type="submit">Add Patient</button>
         </form>

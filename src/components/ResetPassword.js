@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/ResetPassword.css';
-import config from '../config'; // Import the config file
-import { useLoader } from './LoaderContext'; // Import the loader context
+import config from '../config';
+import { useLoader } from './LoaderContext';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -11,7 +11,7 @@ const ResetPassword = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { token } = useParams();
-  const { showLoader, hideLoader } = useLoader(); // Use the loader context
+  const { showLoader, hideLoader } = useLoader();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const ResetPassword = () => {
       return;
     }
 
-    showLoader(); // Show loader before the request
+    showLoader();
 
     try {
       const response = await fetch(`${config.API_BASE_URL}/auth/reset-password`, {
@@ -44,7 +44,7 @@ const ResetPassword = () => {
     } catch (error) {
       setError('An error occurred. Please try again.');
     } finally {
-      hideLoader(); // Hide loader after the request
+      hideLoader();
     }
   };
 

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
-import config from '../config'; // Import the config file
+import config from '../config';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [staffID, setStaffID] = useState('');
-  const [role, setRole] = useState('admin'); // Default to admin
+  const [role, setRole] = useState('admin');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // useNavigate to programmatically navigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear error message before submitting
+    setError('');
 
     const loginData = role === 'admin' ? { username, password } : { staffID, password };
 
@@ -23,16 +23,15 @@ const Login = ({ onLogin }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...loginData, role }), // Pass both login data and role
+        body: JSON.stringify({ ...loginData, role }),
       });
 
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.role);
-        onLogin(data.role); // Pass the role to the onLogin callback
+        onLogin(data.role);
 
-        // Redirect based on role
         navigate(`/${data.role.toLowerCase()}`);
       } else {
         setError(data.message || 'Invalid login credentials');

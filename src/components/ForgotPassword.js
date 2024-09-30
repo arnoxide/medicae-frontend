@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ForgotPassword.css';
-import config from '../config'; // Import the config file
+import config from '../config';
+import { useLoader } from './LoaderContext';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoader();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setMessage('');
+
+    showLoader();
 
     try {
       const response = await fetch(`${config.API_BASE_URL}/auth/forgot-password`, {
@@ -31,6 +35,8 @@ const ForgotPassword = () => {
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
+    } finally {
+      hideLoader();
     }
   };
 

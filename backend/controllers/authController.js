@@ -3,11 +3,10 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { promisify } = require('util');
-const User = require('../models/User'); // Admin model
-const Staff = require('../models/Staff'); // Staff model
+const User = require('../models/User');
+const Staff = require('../models/Staff');
 const secretKey = process.env.SECRET_KEY;
 
-// Existing functions
 exports.loginUser = async (req, res) => {
   const { username, staffID, password, role } = req.body;
 

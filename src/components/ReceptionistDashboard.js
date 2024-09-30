@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddPatientModal from './AddPatientModal';
 import AddStaffModal from './AddStaffModal';
-import '../styles/AdminDashboard.css';
+import PatientFile from './PatientFile';
+import '../styles/ReceptionistDashboard.css';
 import {
   Home, Users, Calendar, Stethoscope, Building, Briefcase,
-  Settings, HelpCircle, LogOut, Plus, MoreVertical, Edit, Trash2
+  Settings, HelpCircle, LogOut, Plus, MoreVertical, Edit, Trash2, FileText
 } from 'lucide-react';
 
 const Sidebar = ({ activePage, setActivePage, onLogout }) => (
@@ -15,6 +16,7 @@ const Sidebar = ({ activePage, setActivePage, onLogout }) => (
       {[
         { name: 'Overview', icon: <Home size={20} /> },
         { name: 'Patients', icon: <Users size={20} /> },
+        { name: 'Patients File', icon: <FileText size={20} /> },
         { name: 'Appointments', icon: <Calendar size={20} /> },
         { name: 'Doctors', icon: <Stethoscope size={20} /> },
         { name: 'Departments', icon: <Building size={20} /> },
@@ -115,7 +117,7 @@ const Clinics = () => (
   </div>
 );
 
-const PatientList = ({ patients }) => (
+const PatientList = ({ patients, onViewFile }) => (
   <div className="card patient-list">
     <div className="card-header">
       <h3>Patients</h3>
@@ -129,6 +131,7 @@ const PatientList = ({ patients }) => (
           <th>Address</th>
           <th>Phone Number</th>
           <th>Email</th>
+          <th>Action</th> {/* New column */}
         </tr>
       </thead>
       <tbody>
@@ -140,6 +143,9 @@ const PatientList = ({ patients }) => (
             <td>{address}</td>
             <td>{phoneNumber}</td>
             <td>{email}</td>
+            <td>
+              <button onClick={() => onViewFile(_id)}>View File</button> {/* New action */}
+            </td>
           </tr>
         ))}
       </tbody>
@@ -173,7 +179,7 @@ const StaffList = ({ staff, activeTab, setActiveTab }) => (
       </thead>
       <tbody>
         {staff
-          .filter(member => member.role === activeTab.slice(0, -1)) // Adjust this logic based on your role naming conventions
+          .filter(member => member.role === activeTab.slice(0, -1))
           .map(({ staffID, fullName, department, status }) => (
             <tr key={staffID}>
               <td>
@@ -202,6 +208,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('Doctors');
   const [activePage, setActivePage] = useState('Overview');
   const [modalType, setModalType] = useState('');
+  const [viewingFile, setViewingFile] = useState(null);
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -249,72 +256,44 @@ const ReceptionistDashboard = ({ onLogout }) => {
     setStaff([...staff, newStaff]);
   };
 
+  const handleViewFile = (patientId) => {
+    setViewingFile(patientId);
+  };
+
   return (
     <div className="dashboard">
       <Sidebar activePage={activePage} setActivePage={setActivePage} onLogout={onLogout} />
       <div className="main-content">
-        {activePage === 'Overview' && (
-          <div className="dashboard-grid">
-            <div className="left-column">
-              <DoctorStats />
-              <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
-              <Clinics />
-            </div>
-            <div className="right-column">
-              <StaffList staff={staff} activeTab={activeTab} setActiveTab={setActiveTab} />
-            </div>
-          </div>
-        )}
-        {activePage === 'Patients' && (
+        {viewingFile ? (
+          <PatientFile patientId={viewingFile} role="receptionist" />
+        ) : (
           <>
-            <Header onAddClick={() => { setShowModal(true); setModalType('patient'); }} buttonText="Add Patient" />
-            <PatientList patients={patients} />
-          </>
-        )}
-        {activePage === 'Doctors' && (
-          <>
-          
-            <div className="dashboard-grid">
-              <div className="left-column">
-                <DoctorStats />
-                <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
-                <Clinics />
+            {activePage === 'Overview' && (
+              <div className="dashboard-grid">
+                <div className="left-column">
+                  <DoctorStats />
+                  <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
+                  <Clinics />
+                </div>
+                <div className="right-column">
+                  <StaffList staff={staff} activeTab={activeTab} setActiveTab={setActiveTab} />
+                </div>
               </div>
-              <div className="right-column">
-                <StaffList staff={staff} activeTab={activeTab} setActiveTab={setActiveTab} />
+            )}
+            {activePage === 'Patients' && (
+              <>
+                <Header onAddClick={() => { setShowModal(true); setModalType('patient'); }} buttonText="Add Patient" />
+                <PatientList patients={patients} onViewFile={handleViewFile} />
+              </>
+            )}
+            {activePage === 'Patients File' && (
+              <div className="patient-file-page">
+                <h1>Select a patient to view their file</h1>
+                <PatientList patients={patients} onViewFile={handleViewFile} />
               </div>
-            </div>
+            )}
+            {/* Other pages */}
           </>
-        )}
-        {activePage === 'Appointments' && (
-          <div>
-            <h2>Appointments Content</h2>
-            {/* Add Appointments content here */}
-          </div>
-        )}
-        {activePage === 'Departments' && (
-          <div>
-            <h2>Departments Content</h2>
-            {/* Add Departments content here */}
-          </div>
-        )}
-        {activePage === 'Staff' && (
-          <>
-            <Header onAddClick={() => { setShowModal(true); setModalType('staff'); }} buttonText="Add Staff" />
-            <StaffList staff={staff} activeTab={activeTab} setActiveTab={setActiveTab} />
-          </>
-        )}
-        {activePage === 'Settings' && (
-          <div>
-            <h2>Settings Content</h2>
-            {/* Add Settings content here */}
-          </div>
-        )}
-        {activePage === 'Help & support' && (
-          <div>
-            <h2>Help & support Content</h2>
-            {/* Add Help & support content here */}
-          </div>
         )}
       </div>
       {showModal && modalType === 'patient' && <AddPatientModal onClose={() => setShowModal(false)} onAddPatient={handleAddPatient} />}

@@ -1,8 +1,7 @@
 const Patient = require('../models/Patient');
 
-// Create a new patient
 exports.createPatient = async (req, res) => {
-  const { firstName, lastName, dateOfBirth, address, phoneNumber, email } = req.body;
+  const { firstName, lastName, dateOfBirth, address, phoneNumber, email, gender } = req.body;
 
   try {
     const newPatient = new Patient({
@@ -12,17 +11,17 @@ exports.createPatient = async (req, res) => {
       address,
       phoneNumber,
       email,
+      gender,
     });
 
     const savedPatient = await newPatient.save();
     res.status(201).json(savedPatient);
   } catch (error) {
-    console.error('Error creating patient:', error); // Improved logging
+    console.error('Error creating patient:', error);
     res.status(500).json({ message: 'Error creating patient', error });
   }
 };
 
-// Get patient by ID
 exports.getPatientById = async (req, res) => {
   const { id } = req.params;
 
@@ -37,7 +36,6 @@ exports.getPatientById = async (req, res) => {
   }
 };
 
-// Get all patients
 exports.getAllPatients = async (req, res) => {
   try {
     const patients = await Patient.find();
@@ -47,7 +45,6 @@ exports.getAllPatients = async (req, res) => {
   }
 };
 
-// Update patient by ID
 exports.updatePatientById = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -63,7 +60,6 @@ exports.updatePatientById = async (req, res) => {
   }
 };
 
-// Delete patient by ID
 exports.deletePatientById = async (req, res) => {
   const { id } = req.params;
 
