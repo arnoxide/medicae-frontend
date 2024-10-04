@@ -10,7 +10,12 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
     },
     gender: '',
     dateOfBirth: '',
-    address: '',
+    address: {
+      street: '',
+      city: '',
+      state: '',
+      zipCode: ''
+    },
     phoneNumber: '',
     emailAddress: '',
     emergencyContact: {
@@ -19,16 +24,16 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
       phoneNumber: ''
     },
     medicalHistory: {
-      pastMedicalConditions: '',
-      pastSurgeries: '',
-      chronicIllnesses: '',
-      allergies: '',
-      medications: '',
-      vaccinationHistory: ''
+      pastMedicalConditions: [],
+      pastSurgeries: [],
+      chronicIllnesses: [],
+      allergies: [],
+      medications: [],
+      vaccinationHistory: []
     },
     familyHistory: {
-      geneticDiseases: '',
-      familyMedicalConditions: ''
+      geneticDiseases: [],
+      familyMedicalConditions: []
     },
     consultationRecords: [],
     labResults: [],
@@ -36,13 +41,12 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
     insuranceAndBilling: {},
     additionalInformation: {},
     appointmentHistory: {
-      upcomingAppointments: '',
-      pastAppointments: ''
+      upcomingAppointments: [],
+      pastAppointments: []
     }
   });
 
   useEffect(() => {
-    // Fetch patient data when the component mounts
     const fetchPatientData = async () => {
       const token = localStorage.getItem('token');
       try {
@@ -53,8 +57,6 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
         });
 
         const patient = response.data;
-
-        // Ensure patient object and its properties are defined before accessing them
         if (patient) {
           setFileData({
             fullName: {
@@ -62,26 +64,31 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
               lastName: patient.lastName || ''
             },
             gender: patient.gender || '',
-            dateOfBirth: patient.dateOfBirth || '',
-            address: patient.address || '',
+            dateOfBirth: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : '',
+            address: {
+              street: patient.address.street || '',
+              city: patient.address.city || '',
+              state: patient.address.state || '',
+              zipCode: patient.address.zipCode || ''
+            },
             phoneNumber: patient.phoneNumber || '',
             emailAddress: patient.email || '',
             emergencyContact: {
-              name: (patient.emergencyContact && patient.emergencyContact.name) || '',
-              relation: (patient.emergencyContact && patient.emergencyContact.relation) || '',
-              phoneNumber: (patient.emergencyContact && patient.emergencyContact.phoneNumber) || ''
+              name: patient.emergencyContact ? patient.emergencyContact.name : '',
+              relation: patient.emergencyContact ? patient.emergencyContact.relation : '',
+              phoneNumber: patient.emergencyContact ? patient.emergencyContact.phoneNumber : ''
             },
             medicalHistory: {
-              pastMedicalConditions: '',
-              pastSurgeries: '',
-              chronicIllnesses: '',
-              allergies: '',
-              medications: '',
-              vaccinationHistory: ''
+              pastMedicalConditions: [],
+              pastSurgeries: [],
+              chronicIllnesses: [],
+              allergies: [],
+              medications: [],
+              vaccinationHistory: []
             },
             familyHistory: {
-              geneticDiseases: '',
-              familyMedicalConditions: ''
+              geneticDiseases: [],
+              familyMedicalConditions: []
             },
             consultationRecords: [],
             labResults: [],
@@ -89,8 +96,8 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
             insuranceAndBilling: {},
             additionalInformation: {},
             appointmentHistory: {
-              upcomingAppointments: '',
-              pastAppointments: ''
+              upcomingAppointments: [],
+              pastAppointments: []
             }
           });
         }
@@ -123,6 +130,7 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem('token');
     try {
       const response = await axios.post(`http://localhost:5000/api/patient-files`, fileData, {
@@ -144,80 +152,131 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>First Name</label>
-            <input type="text" name="firstName" value={fileData.fullName.firstName} onChange={(e) => handleNestedChange(e, 'fullName', 'firstName')} />
+            <input type="text" name="firstName" value={fileData.fullName.firstName} readOnly />
           </div>
           <div className="form-group">
             <label>Last Name</label>
-            <input type="text" name="lastName" value={fileData.fullName.lastName} onChange={(e) => handleNestedChange(e, 'fullName', 'lastName')} />
+            <input type="text" name="lastName" value={fileData.fullName.lastName} readOnly />
           </div>
           <div className="form-group">
             <label>Gender</label>
-            <input type="text" name="gender" value={fileData.gender} onChange={handleChange} />
+            <input type="text" name="gender" value={fileData.gender} readOnly />
           </div>
           <div className="form-group">
             <label>Date of Birth</label>
-            <input type="date" name="dateOfBirth" value={fileData.dateOfBirth} onChange={handleChange} />
+            <input type="date" name="dateOfBirth" value={fileData.dateOfBirth} readOnly />
           </div>
           <div className="form-group">
-            <label>Address</label>
-            <input type="text" name="address" value={fileData.address} onChange={handleChange} />
+            <label>Street</label>
+            <input type="text" name="street" value={fileData.address.street} readOnly />
+          </div>
+          <div className="form-group">
+            <label>City</label>
+            <input type="text" name="city" value={fileData.address.city} readOnly />
+          </div>
+          <div className="form-group">
+            <label>State</label>
+            <input type="text" name="state" value={fileData.address.state} readOnly />
+          </div>
+          <div className="form-group">
+            <label>Zip Code</label>
+            <input type="text" name="zipCode" value={fileData.address.zipCode} readOnly />
           </div>
           <div className="form-group">
             <label>Phone Number</label>
-            <input type="text" name="phoneNumber" value={fileData.phoneNumber} onChange={handleChange} />
+            <input type="text" name="phoneNumber" value={fileData.phoneNumber} readOnly />
           </div>
           <div className="form-group">
             <label>Email Address</label>
-            <input type="email" name="emailAddress" value={fileData.emailAddress} onChange={handleChange} />
+            <input type="email" name="emailAddress" value={fileData.emailAddress} readOnly />
           </div>
           <div className="form-group">
             <label>Emergency Contact Name</label>
-            <input type="text" name="emergencyContactName" value={fileData.emergencyContact.name} onChange={(e) => handleNestedChange(e, 'emergencyContact', 'name')} />
+            <input type="text" name="emergencyContactName" value={fileData.emergencyContact.name} readOnly />
           </div>
           <div className="form-group">
             <label>Emergency Contact Relation</label>
-            <input type="text" name="emergencyContactRelation" value={fileData.emergencyContact.relation} onChange={(e) => handleNestedChange(e, 'emergencyContact', 'relation')} />
+            <input type="text" name="emergencyContactRelation" value={fileData.emergencyContact.relation} readOnly />
           </div>
           <div className="form-group">
             <label>Emergency Contact Phone Number</label>
-            <input type="text" name="emergencyContactPhoneNumber" value={fileData.emergencyContact.phoneNumber} onChange={(e) => handleNestedChange(e, 'emergencyContact', 'phoneNumber')} />
+            <input type="text" name="emergencyContactPhoneNumber" value={fileData.emergencyContact.phoneNumber} readOnly />
           </div>
 
-          {(role === 'doctor' || role === 'nurse' || role === 'admin' || role === 'patient') && (
+          {(role === 'doctor' || role === 'nurse' || role === 'admin') && (
             <>
               <div className="form-group">
                 <label>Past Medical Conditions</label>
-                <input type="text" name="pastMedicalConditions" value={fileData.medicalHistory.pastMedicalConditions} onChange={(e) => handleNestedChange(e, 'medicalHistory', 'pastMedicalConditions')} />
+                <input 
+                  type="text" 
+                  name="pastMedicalConditions" 
+                  value={fileData.medicalHistory.pastMedicalConditions} 
+                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'pastMedicalConditions')} 
+                />
               </div>
               <div className="form-group">
                 <label>Past Surgeries</label>
-                <input type="text" name="pastSurgeries" value={fileData.medicalHistory.pastSurgeries} onChange={(e) => handleNestedChange(e, 'medicalHistory', 'pastSurgeries')} />
+                <input 
+                  type="text" 
+                  name="pastSurgeries" 
+                  value={fileData.medicalHistory.pastSurgeries} 
+                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'pastSurgeries')} 
+                />
               </div>
               <div className="form-group">
                 <label>Chronic Illnesses</label>
-                <input type="text" name="chronicIllnesses" value={fileData.medicalHistory.chronicIllnesses} onChange={(e) => handleNestedChange(e, 'medicalHistory', 'chronicIllnesses')} />
+                <input 
+                  type="text" 
+                  name="chronicIllnesses" 
+                  value={fileData.medicalHistory.chronicIllnesses} 
+                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'chronicIllnesses')} 
+                />
               </div>
               <div className="form-group">
                 <label>Allergies</label>
-                <input type="text" name="allergies" value={fileData.medicalHistory.allergies} onChange={(e) => handleNestedChange(e, 'medicalHistory', 'allergies')} />
+                <input 
+                  type="text" 
+                  name="allergies" 
+                  value={fileData.medicalHistory.allergies} 
+                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'allergies')} 
+                />
               </div>
               <div className="form-group">
                 <label>Medications</label>
-                <input type="text" name="medications" value={fileData.medicalHistory.medications} onChange={(e) => handleNestedChange(e, 'medicalHistory', 'medications')} />
+                <input 
+                  type="text" 
+                  name="medications" 
+                  value={fileData.medicalHistory.medications} 
+                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'medications')} 
+                />
               </div>
               <div className="form-group">
                 <label>Vaccination History</label>
-                <input type="text" name="vaccinationHistory" value={fileData.medicalHistory.vaccinationHistory} onChange={(e) => handleNestedChange(e, 'medicalHistory', 'vaccinationHistory')} />
+                <input 
+                  type="text" 
+                  name="vaccinationHistory" 
+                  value={fileData.medicalHistory.vaccinationHistory} 
+                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'vaccinationHistory')} 
+                />
               </div>
               <div className="form-group">
                 <label>Genetic Diseases</label>
-                <input type="text" name="geneticDiseases" value={fileData.familyHistory.geneticDiseases} onChange={(e) => handleNestedChange(e, 'familyHistory', 'geneticDiseases')} />
+                <input 
+                  type="text" 
+                  name="geneticDiseases" 
+                  value={fileData.familyHistory.geneticDiseases} 
+                  onChange={(e) => handleNestedChange(e, 'familyHistory', 'geneticDiseases')} 
+                />
               </div>
               <div className="form-group">
                 <label>Family Medical Conditions</label>
-                <input type="text" name="familyMedicalConditions" value={fileData.familyHistory.familyMedicalConditions} onChange={(e) => handleNestedChange(e, 'familyHistory', 'familyMedicalConditions')} />
+                <input 
+                  type="text" 
+                  name="familyMedicalConditions" 
+                  value={fileData.familyHistory.familyMedicalConditions} 
+                  onChange={(e) => handleNestedChange(e, 'familyHistory', 'familyMedicalConditions')} 
+                />
               </div>
-              {/* Add more fields as necessary for doctors */}
             </>
           )}
 

@@ -6,7 +6,10 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [address, setAddress] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
@@ -19,10 +22,10 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
         firstName,
         lastName,
         dateOfBirth,
-        address,
+        address: { street, city, state, zipCode },  // Ensure address object is correctly structured
         phoneNumber,
         email,
-        gender, // Include gender in the request
+        gender,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,11 +73,38 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
             />
           </div>
           <div className="form-group">
-            <label>Address</label>
+            <label>Street</label>
             <input
               type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              value={street}
+              onChange={(e) => setStreet(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>City</label>
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>State</label>
+            <input
+              type="text"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Zip Code</label>
+            <input
+              type="text"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
               required
             />
           </div>
