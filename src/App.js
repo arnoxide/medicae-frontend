@@ -10,11 +10,11 @@ import PatientsDashboard from './components/PatientsDashboard';
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import { LoaderProvider, useLoader } from './components/LoaderContext';
+import { LoaderProvider } from './components/LoaderContext';
 import Loader from './components/Loader';
 import PatientFile from './components/PatientFile';
 
-const ProtectedRoute = ({ element, ...rest }) => {
+const ProtectedRoute = ({ element }) => {
   const isAuthenticated = localStorage.getItem('token');
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
@@ -31,14 +31,14 @@ function App() {
     if (token && role) {
       setIsLoggedIn(true);
       setUserRole(role);
-      setPage(role + ' Dashboard'); // Set initial page name based on role
+      setPage(role + ' Dashboard');
     }
   }, []);
 
   const handleLogin = (role) => {
     setIsLoggedIn(true);
     setUserRole(role);
-    setPage(role + ' Dashboard'); // Set initial page name based on role
+    setPage(role + ' Dashboard');
   };
 
   const handleLogout = () => {
@@ -66,8 +66,8 @@ function App() {
               <Route path="/patient-file" element={<ProtectedRoute element={<PatientFile onLogout={handleLogout} />} />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
-              <Route path="/" element={<Navigate to={`/${userRole.toLowerCase()}`} />} />
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
+              <Route path="/" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
               <Route path="*" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
             </Routes>
           </div>
