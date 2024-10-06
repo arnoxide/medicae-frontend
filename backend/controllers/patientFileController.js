@@ -1,18 +1,18 @@
 const PatientFile = require('../models/PatientFile');
 
 exports.createPatientFile = async (req, res) => {
-  const { patientId, fullName, gender, dateOfBirth, address, phoneNumber, emailAddress, emergencyContact, medicalHistory, familyHistory, consultationRecords, labResults, vitalSigns, insuranceAndBilling, additionalInformation, appointmentHistory } = req.body;
+  const { patientId,firstName,lastName, gender, dateOfBirth, address, phoneNumber, emailAddress, emergencyContact, medicalHistory, familyHistory, consultationRecords, labResults, vitalSigns, insuranceAndBilling, additionalInformation, appointmentHistory } = req.body;
 
   try {
+    let relation = "Test";
     const newPatientFile = new PatientFile({
       patientId,
-      fullName,
+      fullName :{firstName,lastName},
       gender,
       dateOfBirth,
       address,
       phoneNumber,
       emailAddress,
-      emergencyContact,
       medicalHistory,
       familyHistory,
       consultationRecords,
