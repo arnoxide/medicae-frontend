@@ -95,7 +95,7 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
     };
   
     fetchPatientData();
-  }, [patientId]);6  
+  }, [patientId]);
 
   const handleNestedChange = (e, section, nestedField) => {
     const { value } = e.target;

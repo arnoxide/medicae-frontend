@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Topbar from './components/Topbar';
+import Topbar from './components/common/Topbar';
 import './App.css';
-import AdminDashboard from './components/AdminDashboard';
-import DoctorsDashboard from './components/DoctorsDashboard';
-import NursesDashboard from './components/NursesDashboard';
-import ReceptionistDashboard from './components/ReceptionistDashboard';
-import PatientsDashboard from './components/PatientsDashboard';
-import Login from './components/Login';
-import ForgotPassword from './components/ForgotPassword';
-import ResetPassword from './components/ResetPassword';
-import { LoaderProvider, useLoader } from './components/LoaderContext';
-import Loader from './components/Loader';
-import PatientFile from './components/PatientFile';
+import AdminDashboard from './components/dashboard/AdminDashboard';
+import DoctorsDashboard from './components/dashboard/DoctorsDashboard';
+import NursesDashboard from './components/dashboard/NursesDashboard';
+import ReceptionistDashboard from './components/dashboard/ReceptionistDashboard';
+import PatientsDashboard from './components/dashboard/PatientsDashboard';
+import Login from './components/auth/Login';
+import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
+import { LoaderProvider, useLoader } from './context/LoaderContext';
+import Loader from './components/common/Loader';
+import PatientFile from './components/patient/PatientFile';
 
 const ProtectedRoute = ({ element, ...rest }) => {
   const isAuthenticated = localStorage.getItem('token');
@@ -31,14 +31,14 @@ function App() {
     if (token && role) {
       setIsLoggedIn(true);
       setUserRole(role);
-      setPage(role + ' Dashboard'); // Set initial page name based on role
+      setPage(role + ' Dashboard');
     }
   }, []);
 
   const handleLogin = (role) => {
     setIsLoggedIn(true);
     setUserRole(role);
-    setPage(role + ' Dashboard'); // Set initial page name based on role
+    setPage(role + ' Dashboard');
   };
 
   const handleLogout = () => {
