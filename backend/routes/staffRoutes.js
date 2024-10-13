@@ -5,5 +5,6 @@ const authenticateJWT = require('../middleware/authMiddleware');
 
 router.post('/create', authenticateJWT, staffController.createStaff);
 router.get('/all', authenticateJWT, staffController.getAllStaff);
+router.get('/doctors', authenticateJWT, staffController.getDoctors);
 
 module.exports = router;

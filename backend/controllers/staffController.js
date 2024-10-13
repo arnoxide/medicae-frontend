@@ -13,7 +13,6 @@ exports.createStaff = async (req, res) => {
   }
 
   try {
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newStaff = new Staff({
@@ -38,8 +37,6 @@ exports.createStaff = async (req, res) => {
     });
 
     await newStaff.save();
-
-    // Send email with login credentials
     await sendEmail(email, password);
 
     res.status(201).json({ message: 'Staff created successfully' });
@@ -83,5 +80,15 @@ exports.getAllStaff = async (req, res) => {
   } catch (error) {
     console.error('Error fetching staff:', error);
     res.status(500).json({ message: 'Error fetching staff', error: error.message });
+  }
+};
+
+exports.getDoctors = async (req, res) => {
+  try {
+    const doctors = await Staff.find({ role: 'Doctor', status: 'active' });
+    res.status(200).json(doctors);
+  } catch (error) {
+    console.error('Error fetching doctors:', error);
+    res.status(500).json({ message: 'Error fetching doctors', error });
   }
 };
