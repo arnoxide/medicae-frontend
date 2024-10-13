@@ -210,7 +210,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
         }
       };
 
-      fetchPatients();
+      fetchPatients().then(r => console.log("Patient Fetch Operation Executed"));
     }
   }, [activePage]);
 
@@ -248,7 +248,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
   };
 
   const handleAddFile = (newFile) => {
-    setPatients(patients.map(patient => 
+    setPatients(patients.map(patient =>
       patient._id === newFile.patientId ? { ...patient, hasFile: 1 } : patient
     ));
     setShowModal(false);
@@ -296,8 +296,11 @@ const ReceptionistDashboard = ({ onLogout }) => {
       {showModal && modalType === 'file' && (
         <AddFileModal
           patientId={patientToAddFile}
+          data={patients.map(patient =>
+              patients._id === patients.patientId ? { ...patient, hasFile: 1 , name: patient.fullName} : patient)
+          }
           role="receptionist"
-          onClose={() => { setShowModal(false); setPatientToAddFile(null); }}
+          onClose={() => { setShowModal(false); setPatientToAddFile(patientToAddFile); }}
           onAddFile={handleAddFile}
         />
       )}

@@ -111,7 +111,7 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
   };
 
   const handleNestedChange = (e, section, nestedField) => {
-    const { name, value } = e.target;
+    const {value } = e.target;
     setFileData((prevData) => ({
       ...prevData,
       [section]: {

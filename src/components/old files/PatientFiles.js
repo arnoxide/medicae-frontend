@@ -8,7 +8,6 @@ const PatientFiles = () => {
   const [patients, setPatients] = useState([
     { id: 1, fileNumber: 'PF-001', name: 'John Doe', idNumber: '1234567891234', fingerprint: 'Fingerprint1', medicalHistory: 'No allergies', status: 'Active' },
     { id: 2, fileNumber: 'PF-002', name: 'Jane Smith', idNumber: '1234567891234', fingerprint: 'Fingerprint2', medicalHistory: 'Diabetic', status: 'Active' },
-    // Add more sample data as needed
   ]);
 
   const [form, setForm] = useState({
@@ -110,6 +109,7 @@ const PatientFiles = () => {
                   type="text"
                   name="name"
                   value={form.name}
+                  placeholder={form.name}
                   onChange={handleFormChange}
                   required
                 />
@@ -120,6 +120,7 @@ const PatientFiles = () => {
                   type="text"
                   name="idNumber"
                   value={form.idNumber}
+                  placeholder={form.idNumber}
                   onChange={handleFormChange}
                   required
                 />

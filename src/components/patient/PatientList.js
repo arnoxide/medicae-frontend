@@ -74,7 +74,7 @@ const PatientList = ({ patients, onViewFile, onAddFile }) => {
               <td>{email}</td>
               <td>
                 {patientFiles[idNumber] ? (
-                  <button onClick={() => onViewFile(idNumber)}>View File</button>
+                  <button onClick={() => onAddFile(idNumber)}>View File</button> //Updated to Modal for now
                 ) : (
                   <button onClick={() => onAddFile(idNumber)}>Add File</button>
                 )}

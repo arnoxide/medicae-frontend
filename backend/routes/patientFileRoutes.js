@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 
 router.post('/', createPatientFile);
-router.get('/:idNumber', getPatientFileById);
+router.get('/:patientId', getPatientFileById);
 router.put('/:patientId', updatePatientFileById);
 router.delete('/:patientId', deletePatientFileById);
 
