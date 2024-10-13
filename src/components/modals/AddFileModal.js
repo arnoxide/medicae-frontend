@@ -58,7 +58,7 @@ const AddFileModal = ({ idNumber, onClose, onAddFile }) => {
         });
   
         const patient = response.data;
-        console.log('Fetched patient data:', patient); // Log the fetched data here to check
+        console.log('Fetched patient data:', patient);
         if (patient) {
           setFileData((prevData) => ({
             ...prevData,

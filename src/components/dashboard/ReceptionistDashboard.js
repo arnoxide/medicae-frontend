@@ -9,6 +9,7 @@ import {
   Home, Users, Calendar, Stethoscope, Building, Briefcase,
   Settings, HelpCircle, LogOut, Plus, MoreVertical, Edit, Trash2, FileText
 } from 'lucide-react';
+import Appointments from '../patient/Appointments';
 
 const Sidebar = ({ activePage, setActivePage, onLogout }) => (
   <div className="sidebar">
@@ -287,6 +288,9 @@ const ReceptionistDashboard = ({ onLogout }) => {
                 <h1>Select a patient to view their file</h1>
                 <PatientList patients={patients} onViewFile={handleViewFile} onAddFile={(patientId) => { setPatientToAddFile(patientId); setShowModal(true); setModalType('file'); }} />
               </div>
+            )}
+            {activePage === 'Appointments' && (
+              <Appointments />
             )}
             {/* Other pages */}
           </>
