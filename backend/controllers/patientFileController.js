@@ -5,6 +5,7 @@ exports.createPatientFile = async (req, res) => {
 
   try {
     const existingFile = await PatientFile.findOne({ idNumber });
+
     if (existingFile) {
       return res.status(400).json({ message: 'Patient file already exists for this ID number.' });
     }
