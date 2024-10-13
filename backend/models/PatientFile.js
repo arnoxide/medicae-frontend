@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-
-const patientFileSchema = new Schema({
+const patientFileSchema = new mongoose.Schema({
   patientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: false },
+  idNumber: { type: String, required: true, unique: true },
   fullName: {
     firstName: { type: String, required: false },
     lastName: { type: String, required: false }
@@ -18,7 +17,11 @@ const patientFileSchema = new Schema({
   },
   phoneNumber: { type: String, required: false },
   emailAddress: { type: String, required: false },
-  emergencyContact: { type: String, required:false},
+  emergencyContact: {
+    name: { type: String, required: false },
+    relation: { type: String, required: false },
+    phoneNumber: { type: String, required: false }
+  },
   medicalHistory: {
     pastMedicalConditions: { type: [String], default: [] },
     pastSurgeries: { type: [String], default: [] },

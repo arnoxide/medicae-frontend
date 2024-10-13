@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddPatientModal from '../modals/AddPatientModal';
-import AddStaffModal from '../modals/AddStaffModal';
+import AddFileModal from '../modals/AddFileModal';
+import PatientList from '../patient/PatientList';
 import PatientFile from '../patient/PatientFile';
 import '../../styles/ReceptionistDashboard.css';
 import {
@@ -117,42 +118,6 @@ const Clinics = () => (
   </div>
 );
 
-const PatientList = ({ patients, onViewFile }) => (
-  <div className="card patient-list">
-    <div className="card-header">
-      <h3>Patients</h3>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Date of Birth</th>
-          <th>Address</th>
-          <th>Phone Number</th>
-          <th>Email</th>
-          <th>Action</th> {/* New column */}
-        </tr>
-      </thead>
-      <tbody>
-        {patients.map(({ _id, firstName, lastName, dateOfBirth, address, phoneNumber, email }) => (
-          <tr key={_id}>
-            <td>{firstName}</td>
-            <td>{lastName}</td>
-            <td>{new Date(dateOfBirth).toLocaleDateString()}</td>
-            <td>{address}</td>
-            <td>{phoneNumber}</td>
-            <td>{email}</td>
-            <td>
-              <button onClick={() => onViewFile(_id)}>View File</button> {/* New action */}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
-
 const StaffList = ({ staff, activeTab, setActiveTab }) => (
   <div className="card staff-list">
     <div className="card-header">
@@ -209,6 +174,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
   const [activePage, setActivePage] = useState('Overview');
   const [modalType, setModalType] = useState('');
   const [viewingFile, setViewingFile] = useState(null);
+  const [patientToAddFile, setPatientToAddFile] = useState(null);
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -250,14 +216,44 @@ const ReceptionistDashboard = ({ onLogout }) => {
 
   const handleAddPatient = (newPatient) => {
     setPatients([...patients, newPatient]);
+    alert('Patient added successfully!');
   };
 
   const handleAddStaff = (newStaff) => {
     setStaff([...staff, newStaff]);
   };
 
-  const handleViewFile = (patientId) => {
-    setViewingFile(patientId);
+  const handleViewFile = async (patientId) => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.get(`http://localhost:5000/api/patient-files/${patientId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data) {
+        setViewingFile(patientId);
+      } else {
+        setPatientToAddFile(patientId);
+        setShowModal(true);
+        setModalType('file');
+      }
+    } catch (error) {
+      console.error('Error checking patient file:', error);
+      setPatientToAddFile(patientId);
+      setShowModal(true);
+      setModalType('file');
+    }
+  };
+
+  const handleAddFile = (newFile) => {
+    setPatients(patients.map(patient => 
+      patient._id === newFile.patientId ? { ...patient, hasFile: 1 } : patient
+    ));
+    setShowModal(false);
+    setPatientToAddFile(null);
+    alert('File added successfully!');
   };
 
   return (
@@ -283,13 +279,13 @@ const ReceptionistDashboard = ({ onLogout }) => {
             {activePage === 'Patients' && (
               <>
                 <Header onAddClick={() => { setShowModal(true); setModalType('patient'); }} buttonText="Add Patient" />
-                <PatientList patients={patients} onViewFile={handleViewFile} />
+                <PatientList patients={patients} onViewFile={handleViewFile} onAddFile={(patientId) => { setPatientToAddFile(patientId); setShowModal(true); setModalType('file'); }} />
               </>
             )}
             {activePage === 'Patients File' && (
               <div className="patient-file-page">
                 <h1>Select a patient to view their file</h1>
-                <PatientList patients={patients} onViewFile={handleViewFile} />
+                <PatientList patients={patients} onViewFile={handleViewFile} onAddFile={(patientId) => { setPatientToAddFile(patientId); setShowModal(true); setModalType('file'); }} />
               </div>
             )}
             {/* Other pages */}
@@ -297,7 +293,14 @@ const ReceptionistDashboard = ({ onLogout }) => {
         )}
       </div>
       {showModal && modalType === 'patient' && <AddPatientModal onClose={() => setShowModal(false)} onAddPatient={handleAddPatient} />}
-      {showModal && modalType === 'staff' && <AddStaffModal onClose={() => setShowModal(false)} onAddStaff={handleAddStaff} />}
+      {showModal && modalType === 'file' && (
+        <AddFileModal
+          patientId={patientToAddFile}
+          role="receptionist"
+          onClose={() => { setShowModal(false); setPatientToAddFile(null); }}
+          onAddFile={handleAddFile}
+        />
+      )}
     </div>
   );
 };

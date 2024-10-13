@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/StaffList.css';
+import '../../styles/StaffList.css';
 
 const StaffList = () => {
   const [staff, setStaff] = useState([

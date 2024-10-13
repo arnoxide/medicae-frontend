@@ -13,6 +13,22 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
+  const [isSouthAfrican, setIsSouthAfrican] = useState(true);
+  const [idNumber, setIdNumber] = useState('');
+
+  const handleIdNumberChange = (value) => {
+    const cleanedValue = value.replace(/\D/g, ''); // Ensure only digits
+    setIdNumber(cleanedValue);
+
+    if (isSouthAfrican && cleanedValue.length === 13) {
+      // Parse date of birth from ID number
+      const yearPrefix = cleanedValue[0] === '0' ? '20' : '19';
+      const year = yearPrefix + cleanedValue.substring(0, 2);
+      const month = cleanedValue.substring(2, 4);
+      const day = cleanedValue.substring(4, 6);
+      setDateOfBirth(`${year}-${month}-${day}`);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,10 +38,12 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
         firstName,
         lastName,
         dateOfBirth,
-        address: { street, city, state, zipCode },  // Ensure address object is correctly structured
+        address: { street, city, state, zipCode },
         phoneNumber,
         email,
         gender,
+        idNumber,
+        hasFile: 0
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -33,9 +51,10 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
       });
       onAddPatient(response.data);
       onClose();
+      alert('Patient added successfully!');
     } catch (error) {
       console.error('Error adding patient:', error);
-      console.error('Error response:', error.response.data); // Improved logging
+      alert('Failed to add patient. The ID number or passport might already exist.');
     }
   };
 
@@ -45,6 +64,27 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
         <span className="close" onClick={onClose}>&times;</span>
         <h2>Add Patient</h2>
         <form onSubmit={handleSubmit}>
+        <div className="form-group">
+            <label>South African Citizen?</label>
+            <select
+              value={isSouthAfrican}
+              onChange={(e) => setIsSouthAfrican(e.target.value === 'true')}
+              required
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>{isSouthAfrican ? 'ID Number' : 'Passport Number'}</label>
+            <input
+              type="text"
+              value={idNumber}
+              onChange={(e) => handleIdNumberChange(e.target.value)}
+              maxLength={isSouthAfrican ? 13 : 9}
+              required
+            />
+          </div>
           <div className="form-group">
             <label>First Name</label>
             <input
@@ -70,6 +110,7 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
               required
+              readOnly={isSouthAfrican} // Make it read-only for SA ID automatic population
             />
           </div>
           <div className="form-group">
@@ -139,6 +180,7 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
               <option value="other">Other</option>
             </select>
           </div>
+       
           <button type="submit">Add Patient</button>
         </form>
       </div>

@@ -14,8 +14,10 @@ const patientSchema = new mongoose.Schema({
     required: true
   },
   address: {
-    type: String,
-    required: true
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    zipCode: { type: String, required: true }
   },
   phoneNumber: {
     type: String,
@@ -28,6 +30,15 @@ const patientSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: true
+  },
+  idNumber: {
+    type: String,
+    required: true,
+    unique: true // Ensure uniqueness
+  },
+  hasFile: {
+    type: Number,
+    default: 0 // 0 for no file, 1 for has file
   }
 });
 

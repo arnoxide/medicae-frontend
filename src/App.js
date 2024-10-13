@@ -10,13 +10,14 @@ import PatientsDashboard from './components/dashboard/PatientsDashboard';
 import Login from './components/auth/Login';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
-import { LoaderProvider, useLoader } from './context/LoaderContext';
+import { LoaderProvider } from './context/LoaderContext';
 import Loader from './components/common/Loader';
 import PatientFile from './components/patient/PatientFile';
+import ViewFile from './components/patient/ViewFile';
 
-const ProtectedRoute = ({ element, ...rest }) => {
+const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem('token');
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 function App() {
@@ -58,15 +59,16 @@ function App() {
           )}
           <div className="content">
             <Routes>
-              <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard onLogout={handleLogout} />} />} />
-              <Route path="/doctor" element={<ProtectedRoute element={<DoctorsDashboard onLogout={handleLogout} />} />} />
-              <Route path="/nurse" element={<ProtectedRoute element={<NursesDashboard onLogout={handleLogout} />} />} />
-              <Route path="/receptionist" element={<ProtectedRoute element={<ReceptionistDashboard onLogout={handleLogout} />} />} />
-              <Route path="/patient" element={<ProtectedRoute element={<PatientsDashboard onLogout={handleLogout} />} />} />
-              <Route path="/patient-file" element={<ProtectedRoute element={<PatientFile onLogout={handleLogout} />} />} />
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/doctor" element={<ProtectedRoute><DoctorsDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/nurse" element={<ProtectedRoute><NursesDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/receptionist" element={<ProtectedRoute><ReceptionistDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/patient" element={<ProtectedRoute><PatientsDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/patient-file" element={<ProtectedRoute><PatientFile onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/view-file" element={<ProtectedRoute><ViewFile onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
-              <Route path="/" element={<Navigate to={`/${userRole.toLowerCase()}`} />} />
+              <Route path="/" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="*" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
             </Routes>

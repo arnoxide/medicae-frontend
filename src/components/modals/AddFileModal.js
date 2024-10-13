@@ -2,75 +2,73 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/AddFileModal.css';
 
-const initialFileData = {
-  fullName: {
-    firstName: '',
-    lastName: ''
-  },
-  gender: '',
-  dateOfBirth: '',
-  address: {
-    street: '',
-    city: '',
-    state: '',
-    zipCode: ''
-  },
-  phoneNumber: '',
-  emailAddress: '',
-  emergencyContact: {
-    name: '',
-    relation: '',
-    phoneNumber: ''
-  },
-  medicalHistory: {
-    pastMedicalConditions: [],
-    pastSurgeries: [],
-    chronicIllnesses: [],
-    allergies: [],
-    medications: [],
-    vaccinationHistory: []
-  },
-  familyHistory: {
-    geneticDiseases: [],
-    familyMedicalConditions: []
-  },
-  consultationRecords: [],
-  labResults: [],
-  vitalSigns: {},
-  insuranceAndBilling: {},
-  additionalInformation: {},
-  appointmentHistory: {
-    upcomingAppointments: [],
-    pastAppointments: []
-  }
-};
-
-const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
-  const [fileData, setFileData] = useState(initialFileData);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+const AddFileModal = ({ idNumber, onClose, onAddFile }) => {
+  const [fileData, setFileData] = useState({
+    idNumber: '',
+    fullName: {
+      firstName: '',
+      lastName: ''
+    },
+    gender: '',
+    dateOfBirth: '',
+    address: {
+      street: '',
+      city: '',
+      state: '',
+      zipCode: ''
+    },
+    phoneNumber: '',
+    emailAddress: '',
+    emergencyContact: {
+      name: '',
+      relation: '',
+      phoneNumber: ''
+    },
+    medicalHistory: {
+      pastMedicalConditions: [],
+      pastSurgeries: [],
+      chronicIllnesses: [],
+      allergies: [],
+      medications: [],
+      vaccinationHistory: []
+    },
+    familyHistory: {
+      geneticDiseases: [],
+      familyMedicalConditions: []
+    },
+    consultationRecords: [],
+    labResults: [],
+    vitalSigns: {},
+    insuranceAndBilling: {},
+    additionalInformation: {},
+    appointmentHistory: {
+      upcomingAppointments: [],
+      pastAppointments: []
+    }
+  });
 
   useEffect(() => {
     const fetchPatientData = async () => {
-      setLoading(true);
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`http://localhost:5000/api/patients/${patientId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get(`http://localhost:5000/api/patients/idNumber/${idNumber}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
   
-        console.log(response.data); // Log the response to check the data
-  
         const patient = response.data;
+        console.log('Fetched patient data:', patient); // Log the fetched data here to check
         if (patient) {
-          setFileData({
-            ...fileData,
+          setFileData((prevData) => ({
+            ...prevData,
+            idNumber: patient.idNumber || '',
             fullName: {
               firstName: patient.firstName || '',
               lastName: patient.lastName || ''
             },
             gender: patient.gender || '',
-            dateOfBirth: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : '', // Ensure correct format
+            dateOfBirth: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : '',
             address: {
               street: patient.address.street || '',
               city: patient.address.city || '',
@@ -78,24 +76,16 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
               zipCode: patient.address.zipCode || ''
             },
             phoneNumber: patient.phoneNumber || '',
-            emailAddress: patient.email || '',
-            emergencyContact: {
-              name: patient.emergencyContact ? patient.emergencyContact.name : '',
-              relation: patient.emergencyContact ? patient.emergencyContact.relation : '',
-              phoneNumber: patient.emergencyContact ? patient.emergencyContact.phoneNumber : ''
-            }
-          });
+            emailAddress: patient.email || ''
+          }));
         }
       } catch (error) {
-        setError('Error fetching patient data.');
         console.error('Error fetching patient data:', error);
-      } finally {
-        setLoading(false);
       }
     };
   
     fetchPatientData();
-  }, [patientId]);
+  }, [idNumber]);  
 
   const handleNestedChange = (e, section, nestedField) => {
     const { value } = e.target;
@@ -110,29 +100,32 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post('http://localhost:5000/api/patient-files', fileData, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.post(`http://localhost:5000/api/patient-files`, fileData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       onAddFile(response.data);
+      alert('File added successfully!');
       onClose();
     } catch (error) {
-      setError('Error adding file.');
       console.error('Error adding file:', error);
-    } finally {
-      setLoading(false);
+      alert('Failed to add file. Please try again.');
     }
   };
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>Add File</h2>
-        {loading && <p>Loading...</p>}
-        {error && <p className="error">{error}</p>}
+        <h2>{fileData.idNumber ? 'Edit File' : 'Add File'}</h2>
         <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>ID Number</label>
+            <input type="text" value={fileData.idNumber} readOnly />
+          </div>
           <div className="form-group">
             <label>First Name</label>
             <input type="text" name="firstName" value={fileData.fullName.firstName} readOnly />
@@ -175,97 +168,37 @@ const AddFileModal = ({ patientId, role, onClose, onAddFile }) => {
           </div>
           <div className="form-group">
             <label>Emergency Contact Name</label>
-            <input type="text" name="emergencyContactName" value={fileData.emergencyContact.name} readOnly />
+            <input
+              type="text"
+              name="name"
+              value={fileData.emergencyContact.name}
+              onChange={(e) => handleNestedChange(e, 'emergencyContact', 'name')}
+              required
+            />
           </div>
           <div className="form-group">
             <label>Emergency Contact Relation</label>
-            <input type="text" name="emergencyContactRelation" value={fileData.emergencyContact.relation} readOnly />
+            <input
+              type="text"
+              name="relation"
+              value={fileData.emergencyContact.relation}
+              onChange={(e) => handleNestedChange(e, 'emergencyContact', 'relation')}
+              required
+            />
           </div>
           <div className="form-group">
             <label>Emergency Contact Phone Number</label>
-            <input type="text" name="emergencyContactPhoneNumber" value={fileData.emergencyContact.phoneNumber} readOnly />
+            <input
+              type="text"
+              name="phoneNumber"
+              value={fileData.emergencyContact.phoneNumber}
+              onChange={(e) => handleNestedChange(e, 'emergencyContact', 'phoneNumber')}
+              required
+            />
           </div>
-
-          {(role === 'doctor' || role === 'nurse' || role === 'admin') && (
-            <>
-              <div className="form-group">
-                <label>Past Medical Conditions</label>
-                <input
-                  type="text"
-                  name="pastMedicalConditions"
-                  value={fileData.medicalHistory.pastMedicalConditions}
-                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'pastMedicalConditions')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Past Surgeries</label>
-                <input
-                  type="text"
-                  name="pastSurgeries"
-                  value={fileData.medicalHistory.pastSurgeries}
-                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'pastSurgeries')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Chronic Illnesses</label>
-                <input
-                  type="text"
-                  name="chronicIllnesses"
-                  value={fileData.medicalHistory.chronicIllnesses}
-                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'chronicIllnesses')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Allergies</label>
-                <input
-                  type="text"
-                  name="allergies"
-                  value={fileData.medicalHistory.allergies}
-                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'allergies')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Medications</label>
-                <input
-                  type="text"
-                  name="medications"
-                  value={fileData.medicalHistory.medications}
-                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'medications')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Vaccination History</label>
-                <input
-                  type="text"
-                  name="vaccinationHistory"
-                  value={fileData.medicalHistory.vaccinationHistory}
-                  onChange={(e) => handleNestedChange(e, 'medicalHistory', 'vaccinationHistory')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Genetic Diseases</label>
-                <input
-                  type="text"
-                  name="geneticDiseases"
-                  value={fileData.familyHistory.geneticDiseases}
-                  onChange={(e) => handleNestedChange(e, 'familyHistory', 'geneticDiseases')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Family Medical Conditions</label>
-                <input
-                  type="text"
-                  name="familyMedicalConditions"
-                  value={fileData.familyHistory.familyMedicalConditions}
-                  onChange={(e) => handleNestedChange(e, 'familyHistory', 'familyMedicalConditions')}
-                />
-              </div>
-            </>
-          )}
-
-          <button type="submit" disabled={loading}>Add File</button>
+          <button type="submit">{fileData.idNumber ? 'Update File' : 'Add File'}</button>
         </form>
-        <button onClick={onClose} disabled={loading}>Close</button>
+        <button onClick={onClose}>Close</button>
       </div>
     </div>
   );
