@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AddPatientModal from '../modals/AddPatientModal';
-import AddFileModal from '../modals/AddFileModal';
-import PatientList from '../patient/PatientList';
-import PatientFile from '../patient/PatientFile';
-import '../../styles/ReceptionistDashboard.css';
+import AddStaffModal from './AddStaffModal';
+import '../styles/AdminDashboard.css';
 import {
   Home, Users, Calendar, Stethoscope, Building, Briefcase,
-  Settings, HelpCircle, LogOut, Plus, MoreVertical, Edit, Trash2, FileText
+  DollarSign, Settings, HelpCircle, LogOut, MoreVertical,
+  Edit, Trash2, ChevronRight, Plus
 } from 'lucide-react';
-import Appointments from '../patient/Appointments';
-import PatientFileList from '../patient/PatientFileList';
 
 const Sidebar = ({ activePage, setActivePage, onLogout }) => (
   <div className="sidebar">
@@ -19,7 +15,6 @@ const Sidebar = ({ activePage, setActivePage, onLogout }) => (
       {[
         { name: 'Overview', icon: <Home size={20} /> },
         { name: 'Patients', icon: <Users size={20} /> },
-        { name: 'Patients File', icon: <FileText size={20} /> },
         { name: 'Appointments', icon: <Calendar size={20} /> },
         { name: 'Doctors', icon: <Stethoscope size={20} /> },
         { name: 'Departments', icon: <Building size={20} /> },
@@ -42,11 +37,11 @@ const Sidebar = ({ activePage, setActivePage, onLogout }) => (
   </div>
 );
 
-const Header = ({ onAddClick, buttonText }) => (
+const Header = ({ onAddStaffClick }) => (
   <header className="header">
-    <h1>{buttonText === 'Add Patient' ? 'Patients' : 'Doctors'}</h1>
-    <button className="add-button" onClick={onAddClick}>
-      <Plus size={16} /> {buttonText}
+    <h1>Doctors</h1>
+    <button className="add-button" onClick={onAddStaffClick}>
+      <Plus size={16} /> Add Staff
     </button>
   </header>
 );
@@ -146,7 +141,7 @@ const StaffList = ({ staff, activeTab, setActiveTab }) => (
       </thead>
       <tbody>
         {staff
-          .filter(member => member.role === activeTab.slice(0, -1))
+          .filter(member => member.role === activeTab.slice(0, -1)) // Adjust this logic based on your role naming conventions
           .map(({ staffID, fullName, department, status }) => (
             <tr key={staffID}>
               <td>
@@ -168,15 +163,11 @@ const StaffList = ({ staff, activeTab, setActiveTab }) => (
   </div>
 );
 
-const ReceptionistDashboard = ({ onLogout }) => {
+const AdminDashboard = ({ onLogout }) => {
   const [showModal, setShowModal] = useState(false);
-  const [patients, setPatients] = useState([]);
   const [staff, setStaff] = useState([]);
   const [activeTab, setActiveTab] = useState('Doctors');
   const [activePage, setActivePage] = useState('Overview');
-  const [modalType, setModalType] = useState('');
-  const [viewingFile, setViewingFile] = useState(null);
-  const [patientToAddFile, setPatientToAddFile] = useState(null);
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -196,118 +187,29 @@ const ReceptionistDashboard = ({ onLogout }) => {
     fetchStaff();
   }, []);
 
-  useEffect(() => {
-    if (activePage === 'Patients') {
-      const fetchPatients = async () => {
-        const token = localStorage.getItem('token');
-        try {
-          const response = await axios.get('http://localhost:5000/api/patients', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setPatients(response.data);
-        } catch (error) {
-          console.error('Error fetching patients:', error);
-        }
-      };
-
-      fetchPatients();
-    }
-  }, [activePage]);
-
-  const handleAddPatient = (newPatient) => {
-    setPatients([...patients, newPatient]);
-    alert('Patient added successfully!');
-  };
-
   const handleAddStaff = (newStaff) => {
     setStaff([...staff, newStaff]);
-  };
-
-  const handleViewFile = async (patientId) => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.get(`http://localhost:5000/api/patient-files/${patientId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.data) {
-        setViewingFile(patientId);
-      } else {
-        setPatientToAddFile(patientId);
-        setShowModal(true);
-        setModalType('file');
-      }
-    } catch (error) {
-      console.error('Error checking patient file:', error);
-      setPatientToAddFile(patientId);
-      setShowModal(true);
-      setModalType('file');
-    }
-  };
-
-  const handleAddFile = (newFile) => {
-    setPatients(patients.map(patient => 
-      patient._id === newFile.patientId ? { ...patient, hasFile: 1 } : patient
-    ));
-    setShowModal(false);
-    setPatientToAddFile(null);
-    alert('File added successfully!');
   };
 
   return (
     <div className="dashboard">
       <Sidebar activePage={activePage} setActivePage={setActivePage} onLogout={onLogout} />
       <div className="main-content">
-        {viewingFile ? (
-          <PatientFile patientId={viewingFile} role="receptionist" />
-        ) : (
-          <>
-            {activePage === 'Overview' && (
-              <div className="dashboard-grid">
-                <div className="left-column">
-                  <DoctorStats />
-                  <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
-                  <Clinics />
-                </div>
-                <div className="right-column">
-                  <StaffList staff={staff} activeTab={activeTab} setActiveTab={setActiveTab} />
-                </div>
-              </div>
-            )}
-            {activePage === 'Patients' && (
-              <>
-                <Header onAddClick={() => { setShowModal(true); setModalType('patient'); }} buttonText="Add Patient" />
-                <PatientList patients={patients} onViewFile={handleViewFile} onAddFile={(patientId) => { setPatientToAddFile(patientId); setShowModal(true); setModalType('file'); }} />
-              </>
-            )}
-                 {activePage === 'Patients File' && (
-            <div className="patient-file-page">
-              <h1>Patients with Files</h1>
-              <PatientFileList patients={patients} />
-            </div>
-          )}
-            {activePage === 'Appointments' && (
-              <Appointments />
-            )}
-            {/* Other pages */}
-          </>
-        )}
+        <Header onAddStaffClick={() => setShowModal(true)} />
+        <div className="dashboard-grid">
+          <div className="left-column">
+            <DoctorStats />
+            <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
+            <Clinics />
+          </div>
+          <div className="right-column">
+            <StaffList staff={staff} activeTab={activeTab} setActiveTab={setActiveTab} />
+          </div>
+        </div>
       </div>
-      {showModal && modalType === 'patient' && <AddPatientModal onClose={() => setShowModal(false)} onAddPatient={handleAddPatient} />}
-      {showModal && modalType === 'file' && (
-        <AddFileModal
-          patientId={patientToAddFile}
-          role="receptionist"
-          onClose={() => { setShowModal(false); setPatientToAddFile(null); }}
-          onAddFile={handleAddFile}
-        />
-      )}
+      {showModal && <AddStaffModal onClose={() => setShowModal(false)} onAddStaff={handleAddStaff} />}
     </div>
   );
 };
 
-export default ReceptionistDashboard;
+export default AdminDashboard;

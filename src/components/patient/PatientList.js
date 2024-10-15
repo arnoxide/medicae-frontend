@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AddFileModal from '../modals/AddFileModal'; // Import your modal component
+import { useNavigate } from 'react-router-dom';
+import AddFileModal from '../modals/AddFileModal';
 
-const PatientList = ({ patients, onViewFile }) => {
+const PatientList = ({ patients }) => {
   const [patientFiles, setPatientFiles] = useState({});
-  const [selectedPatient, setSelectedPatient] = useState(null); // State to manage selected patient
-  const [isModalOpen, setModalOpen] = useState(false); // State to manage modal visibility
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPatientFiles = async () => {
@@ -19,13 +21,13 @@ const PatientList = ({ patients, onViewFile }) => {
                   Authorization: `Bearer ${token}`,
                 },
               });
-              return { [patient.idNumber]: response.data ? true : false }; // File exists
+              return { [patient.idNumber]: !!response.data }; // File exists
             } catch (error) {
               if (error.response && error.response.status === 404) {
                 return { [patient.idNumber]: false }; // File does not exist
               }
               console.error('Error checking patient file:', error);
-              return { [patient.idNumber]: false }; // Default to no file on error
+              return { [patient.idNumber]: false };
             }
           })
         );
@@ -34,6 +36,7 @@ const PatientList = ({ patients, onViewFile }) => {
           return { ...acc, ...fileStatus };
         }, {});
 
+        console.log('Fetched patient files:', files); // Debugging line
         setPatientFiles(files);
       } catch (error) {
         console.error('Error fetching patient files:', error);
@@ -44,13 +47,24 @@ const PatientList = ({ patients, onViewFile }) => {
   }, [patients]);
 
   const handleAddFile = (patient) => {
-    setSelectedPatient(patient); // Set the selected patient for the modal
-    setModalOpen(true); // Open the modal
+    setSelectedPatient(patient);
+    setModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false); // Close the modal
-    setSelectedPatient(null); // Clear the selected patient
+    setModalOpen(false);
+    setSelectedPatient(null);
+  };
+
+  const handleViewFile = (idNumber) => {
+    navigate(`/patient-files/${idNumber}`);
+  };
+
+  const handleAddFileSuccess = (idNumber) => {
+    setPatientFiles((prevFiles) => ({
+      ...prevFiles,
+      [idNumber]: true,
+    }));
   };
 
   return (
@@ -87,7 +101,7 @@ const PatientList = ({ patients, onViewFile }) => {
               <td>{patient.email}</td>
               <td>
                 {patientFiles[patient.idNumber] ? (
-                  <button onClick={() => onViewFile(patient.idNumber)}>View File</button>
+                  <button onClick={() => handleViewFile(patient.idNumber)}>View File</button>
                 ) : (
                   <button onClick={() => handleAddFile(patient)}>Add File</button>
                 )}
@@ -99,13 +113,10 @@ const PatientList = ({ patients, onViewFile }) => {
 
       {isModalOpen && selectedPatient && (
         <AddFileModal
-          patient={selectedPatient} // Pass the entire patient object to the modal
+          patient={selectedPatient}
           onClose={handleCloseModal}
           onAddFile={(newFileData) => {
-            setPatientFiles((prevFiles) => ({
-              ...prevFiles,
-              [selectedPatient.idNumber]: true,
-            }));
+            handleAddFileSuccess(selectedPatient.idNumber);
             handleCloseModal();
           }}
         />

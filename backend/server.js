@@ -8,7 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const patientRoutes = require('./routes/patientRoutes');
 const staffRoutes = require('./routes/staffRoutes');
-const patientFileRoutes = require('./routes/patientFileRoutes'); // New route
+const patientFileRoutes = require('./routes/patientFileRoutes');
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/staff', staffRoutes);
-app.use('/api/patient-files', patientFileRoutes); // Use new route
+app.use('/api/patient-files', patientFileRoutes);
 
 const PORT = process.env.PORT || 5000;
 

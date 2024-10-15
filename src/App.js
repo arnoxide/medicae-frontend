@@ -15,6 +15,7 @@ import Loader from './components/common/Loader';
 import PatientFile from './components/patient/PatientFile';
 import ViewFile from './components/patient/ViewFile';
 import Appointments from './components/patient/Appointments';
+import PatientFileList from './components/patient/PatientFileList';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem('token');
@@ -67,6 +68,7 @@ function App() {
               <Route path="/patient" element={<ProtectedRoute><PatientsDashboard onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/patient-file" element={<ProtectedRoute><PatientFile onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/view-file" element={<ProtectedRoute><ViewFile onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/patient-file-list" element={<ProtectedRoute><PatientFileList onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/appointments" element={<ProtectedRoute><Appointments onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />

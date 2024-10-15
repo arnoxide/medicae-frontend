@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../styles/AddFileModal.css';
+import '../../styles/AddFileModal.css'; // Ensure you have the styles in place or adjust as needed
 
 const AddFileModal = ({ patient, onClose, onAddFile }) => {
+  // Initialize the form data with patient details
   const [fileData, setFileData] = useState({
     idNumber: patient.idNumber,
     fullName: {
@@ -47,27 +48,6 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
     },
   });
 
-  useEffect(() => {
-    setFileData((prevData) => ({
-      ...prevData,
-      idNumber: patient.idNumber || '',
-      fullName: {
-        firstName: patient.firstName || '',
-        lastName: patient.lastName || '',
-      },
-      gender: patient.gender || '',
-      dateOfBirth: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : '',
-      address: {
-        street: patient.address.street || '',
-        city: patient.address.city || '',
-        state: patient.address.state || '',
-        zipCode: patient.address.zipCode || '',
-      },
-      phoneNumber: patient.phoneNumber || '',
-      emailAddress: patient.email || '',
-    }));
-  }, [patient]);
-
   const handleNestedChange = (e, section, nestedField) => {
     const { value } = e.target;
     setFileData((prevData) => ({
@@ -81,8 +61,9 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const token = localStorage.getItem('token');
+    console.log('Submitting file data:', fileData); // Log the data being sent
     try {
       const response = await axios.post(`http://localhost:5000/api/patient-files`, fileData, {
         headers: {
@@ -93,15 +74,15 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
       alert('File added successfully!');
       onClose();
     } catch (error) {
-      console.error('Error adding file:', error);
+      console.error('Error adding file:', error.response ? error.response.data : error.message);
       alert('Failed to add file. Please try again.');
     }
-  };
+  };  
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{fileData.idNumber ? 'Edit File' : 'Add File'}</h2>
+        <h2>Add File</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>ID Number</label>
@@ -109,49 +90,48 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
           </div>
           <div className="form-group">
             <label>First Name</label>
-            <input type="text" name="firstName" value={fileData.fullName.firstName} readOnly />
+            <input type="text" value={fileData.fullName.firstName} readOnly />
           </div>
           <div className="form-group">
             <label>Last Name</label>
-            <input type="text" name="lastName" value={fileData.fullName.lastName} readOnly />
+            <input type="text" value={fileData.fullName.lastName} readOnly />
           </div>
           <div className="form-group">
             <label>Gender</label>
-            <input type="text" name="gender" value={fileData.gender} readOnly />
+            <input type="text" value={fileData.gender} readOnly />
           </div>
           <div className="form-group">
             <label>Date of Birth</label>
-            <input type="date" name="dateOfBirth" value={fileData.dateOfBirth} readOnly />
+            <input type="date" value={fileData.dateOfBirth} readOnly />
           </div>
           <div className="form-group">
             <label>Street</label>
-            <input type="text" name="street" value={fileData.address.street} readOnly />
+            <input type="text" value={fileData.address.street} readOnly />
           </div>
           <div className="form-group">
             <label>City</label>
-            <input type="text" name="city" value={fileData.address.city} readOnly />
+            <input type="text" value={fileData.address.city} readOnly />
           </div>
           <div className="form-group">
             <label>State</label>
-            <input type="text" name="state" value={fileData.address.state} readOnly />
+            <input type="text" value={fileData.address.state} readOnly />
           </div>
           <div className="form-group">
             <label>Zip Code</label>
-            <input type="text" name="zipCode" value={fileData.address.zipCode} readOnly />
+            <input type="text" value={fileData.address.zipCode} readOnly />
           </div>
           <div className="form-group">
             <label>Phone Number</label>
-            <input type="text" name="phoneNumber" value={fileData.phoneNumber} readOnly />
+            <input type="text" value={fileData.phoneNumber} readOnly />
           </div>
           <div className="form-group">
             <label>Email Address</label>
-            <input type="email" name="emailAddress" value={fileData.emailAddress} readOnly />
+            <input type="email" value={fileData.emailAddress} readOnly />
           </div>
           <div className="form-group">
             <label>Emergency Contact Name</label>
             <input
               type="text"
-              name="name"
               value={fileData.emergencyContact.name}
               onChange={(e) => handleNestedChange(e, 'emergencyContact', 'name')}
               required
@@ -161,7 +141,6 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
             <label>Emergency Contact Relation</label>
             <input
               type="text"
-              name="relation"
               value={fileData.emergencyContact.relation}
               onChange={(e) => handleNestedChange(e, 'emergencyContact', 'relation')}
               required
@@ -171,13 +150,13 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
             <label>Emergency Contact Phone Number</label>
             <input
               type="text"
-              name="phoneNumber"
               value={fileData.emergencyContact.phoneNumber}
               onChange={(e) => handleNestedChange(e, 'emergencyContact', 'phoneNumber')}
               required
             />
           </div>
-          <button type="submit">{fileData.idNumber ? 'Update File' : 'Add File'}</button>
+          {/* Add additional form fields as necessary for the file data */}
+          <button type="submit">Add File</button>
         </form>
         <button onClick={onClose}>Close</button>
       </div>

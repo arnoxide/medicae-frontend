@@ -20,17 +20,22 @@ exports.createPatientFile = async (req, res) => {
 
 exports.getPatientFileById = async (req, res) => {
   const { idNumber } = req.params;
+  console.log('Fetching file for ID:', idNumber);
 
   try {
     const patientFile = await PatientFile.findOne({ idNumber });
     if (!patientFile) {
+      console.log('Patient file not found for ID:', idNumber);
       return res.status(404).json({ message: 'Patient file not found' });
     }
+    console.log('Patient file found:', patientFile);
     res.status(200).json(patientFile);
   } catch (error) {
+    console.error('Error retrieving patient file:', error);
     res.status(500).json({ message: 'Error retrieving patient file', error });
   }
 };
+
 
 exports.updatePatientFileById = async (req, res) => {
   const { patientId } = req.params;
