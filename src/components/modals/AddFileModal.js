@@ -2,27 +2,27 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/AddFileModal.css';
 
-const AddFileModal = ({ idNumber, onClose, onAddFile }) => {
+const AddFileModal = ({ patient, onClose, onAddFile }) => {
   const [fileData, setFileData] = useState({
-    idNumber: '',
+    idNumber: patient.idNumber,
     fullName: {
-      firstName: '',
-      lastName: ''
+      firstName: patient.firstName,
+      lastName: patient.lastName,
     },
-    gender: '',
-    dateOfBirth: '',
+    gender: patient.gender,
+    dateOfBirth: patient.dateOfBirth.split('T')[0],
     address: {
-      street: '',
-      city: '',
-      state: '',
-      zipCode: ''
+      street: patient.address.street,
+      city: patient.address.city,
+      state: patient.address.state,
+      zipCode: patient.address.zipCode,
     },
-    phoneNumber: '',
-    emailAddress: '',
+    phoneNumber: patient.phoneNumber,
+    emailAddress: patient.email,
     emergencyContact: {
       name: '',
       relation: '',
-      phoneNumber: ''
+      phoneNumber: '',
     },
     medicalHistory: {
       pastMedicalConditions: [],
@@ -30,11 +30,11 @@ const AddFileModal = ({ idNumber, onClose, onAddFile }) => {
       chronicIllnesses: [],
       allergies: [],
       medications: [],
-      vaccinationHistory: []
+      vaccinationHistory: [],
     },
     familyHistory: {
       geneticDiseases: [],
-      familyMedicalConditions: []
+      familyMedicalConditions: [],
     },
     consultationRecords: [],
     labResults: [],
@@ -43,49 +43,30 @@ const AddFileModal = ({ idNumber, onClose, onAddFile }) => {
     additionalInformation: {},
     appointmentHistory: {
       upcomingAppointments: [],
-      pastAppointments: []
-    }
+      pastAppointments: [],
+    },
   });
 
   useEffect(() => {
-    const fetchPatientData = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await axios.get(`http://localhost:5000/api/patients/idNumber/${idNumber}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const patient = response.data;
-        console.log('Fetched patient data:', patient);
-        if (patient) {
-          setFileData((prevData) => ({
-            ...prevData,
-            idNumber: patient.idNumber || '',
-            fullName: {
-              firstName: patient.firstName || '',
-              lastName: patient.lastName || ''
-            },
-            gender: patient.gender || '',
-            dateOfBirth: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : '',
-            address: {
-              street: patient.address.street || '',
-              city: patient.address.city || '',
-              state: patient.address.state || '',
-              zipCode: patient.address.zipCode || ''
-            },
-            phoneNumber: patient.phoneNumber || '',
-            emailAddress: patient.email || ''
-          }));
-        }
-      } catch (error) {
-        console.error('Error fetching patient data:', error);
-      }
-    };
-  
-    fetchPatientData();
-  }, [idNumber]);  
+    setFileData((prevData) => ({
+      ...prevData,
+      idNumber: patient.idNumber || '',
+      fullName: {
+        firstName: patient.firstName || '',
+        lastName: patient.lastName || '',
+      },
+      gender: patient.gender || '',
+      dateOfBirth: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : '',
+      address: {
+        street: patient.address.street || '',
+        city: patient.address.city || '',
+        state: patient.address.state || '',
+        zipCode: patient.address.zipCode || '',
+      },
+      phoneNumber: patient.phoneNumber || '',
+      emailAddress: patient.email || '',
+    }));
+  }, [patient]);
 
   const handleNestedChange = (e, section, nestedField) => {
     const { value } = e.target;

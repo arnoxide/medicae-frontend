@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import AddFileModal from '../modals/AddFileModal'; // Import your modal component
 
-const PatientList = ({ patients, onViewFile, onAddFile }) => {
+const PatientList = ({ patients, onViewFile }) => {
   const [patientFiles, setPatientFiles] = useState({});
+  const [selectedPatient, setSelectedPatient] = useState(null); // State to manage selected patient
+  const [isModalOpen, setModalOpen] = useState(false); // State to manage modal visibility
 
   useEffect(() => {
     const fetchPatientFiles = async () => {
@@ -40,6 +43,16 @@ const PatientList = ({ patients, onViewFile, onAddFile }) => {
     fetchPatientFiles();
   }, [patients]);
 
+  const handleAddFile = (patient) => {
+    setSelectedPatient(patient); // Set the selected patient for the modal
+    setModalOpen(true); // Open the modal
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false); // Close the modal
+    setSelectedPatient(null); // Clear the selected patient
+  };
+
   return (
     <div className="card patient-list">
       <div className="card-header">
@@ -58,31 +71,45 @@ const PatientList = ({ patients, onViewFile, onAddFile }) => {
           </tr>
         </thead>
         <tbody>
-          {patients.map(({ _id, firstName, lastName, dateOfBirth, address, phoneNumber, email, idNumber }) => (
-            <tr key={_id}>
-              <td>{firstName}</td>
-              <td>{lastName}</td>
-              <td>{new Date(dateOfBirth).toLocaleDateString()}</td>
+          {patients.map((patient) => (
+            <tr key={patient._id}>
+              <td>{patient.firstName}</td>
+              <td>{patient.lastName}</td>
+              <td>{new Date(patient.dateOfBirth).toLocaleDateString()}</td>
               <td>
-                {address ? (
+                {patient.address ? (
                   <>
-                    {address.street}, {address.city}, {address.state} {address.zipCode}
+                    {patient.address.street}, {patient.address.city}, {patient.address.state} {patient.address.zipCode}
                   </>
                 ) : 'N/A'}
               </td>
-              <td>{phoneNumber}</td>
-              <td>{email}</td>
+              <td>{patient.phoneNumber}</td>
+              <td>{patient.email}</td>
               <td>
-                {patientFiles[idNumber] ? (
-                  <button onClick={() => onViewFile(idNumber)}>View File</button>
+                {patientFiles[patient.idNumber] ? (
+                  <button onClick={() => onViewFile(patient.idNumber)}>View File</button>
                 ) : (
-                  <button onClick={() => onAddFile(idNumber)}>Add File</button>
+                  <button onClick={() => handleAddFile(patient)}>Add File</button>
                 )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {isModalOpen && selectedPatient && (
+        <AddFileModal
+          patient={selectedPatient} // Pass the entire patient object to the modal
+          onClose={handleCloseModal}
+          onAddFile={(newFileData) => {
+            setPatientFiles((prevFiles) => ({
+              ...prevFiles,
+              [selectedPatient.idNumber]: true,
+            }));
+            handleCloseModal();
+          }}
+        />
+      )}
     </div>
   );
 };
