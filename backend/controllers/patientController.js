@@ -3,7 +3,7 @@ const Patient = require('../models/Patient');
 exports.createPatient = async (req, res) => {
   const { firstName, lastName, dateOfBirth, address, phoneNumber, email, gender, idNumber } = req.body;
 
-  // Validate required fields on server-side (additional to Mongoose validation)
+
   if (!firstName || !lastName || !dateOfBirth || !address || !address.street || !address.city || !address.state || !address.zipCode || !phoneNumber || !email || !gender) {
     return res.status(400).json({ message: 'All required fields must be provided.' });
   }
@@ -30,18 +30,11 @@ exports.createPatient = async (req, res) => {
     res.status(201).json(savedPatient);
   } catch (error) {
     console.error('Error creating patient:', error);
-<<<<<<< HEAD
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: 'Validation Error', errors: error.errors });
-    }
-    res.status(500).json({ message: 'Error creating patient', error });
-=======
     if (error.code === 11000) {
       res.status(400).json({ message: 'Patient with this ID/Passport number already exists.' });
     } else {
       res.status(500).json({ message: 'Error creating patient', error });
     }
->>>>>>> feature/arnold
   }
 };
 
