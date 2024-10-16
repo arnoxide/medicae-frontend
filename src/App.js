@@ -66,8 +66,7 @@ function App() {
               <Route path="/nurse" element={<ProtectedRoute><NursesDashboard onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/receptionist" element={<ProtectedRoute><ReceptionistDashboard onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/patient" element={<ProtectedRoute><PatientsDashboard onLogout={handleLogout} /></ProtectedRoute>} />
-              <Route path="/patient-file" element={<ProtectedRoute><PatientFile onLogout={handleLogout} /></ProtectedRoute>} />
-              <Route path="/view-file" element={<ProtectedRoute><ViewFile onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/patient-files/:patientId" element={<ProtectedRoute><ViewFile /></ProtectedRoute>} />
               <Route path="/patient-file-list" element={<ProtectedRoute><PatientFileList onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/appointments" element={<ProtectedRoute><Appointments onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
