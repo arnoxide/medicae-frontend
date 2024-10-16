@@ -142,7 +142,7 @@ const StaffList = ({ staff, activeTab, setActiveTab }) => (
       </thead>
       <tbody>
         {staff
-          .filter(member => member.role === activeTab.slice(0, -1)) // Adjust this logic based on your role naming conventions
+          .filter(member => member.role === activeTab.slice(0, -1))
           .map(({ staffID, fullName, department, status }) => (
             <tr key={staffID}>
               <td>

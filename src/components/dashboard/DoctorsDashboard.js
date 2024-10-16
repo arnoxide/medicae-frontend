@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Sample data for demonstration
 const patients = [
   { name: 'Beth Mccoy', status: 'On Going', time: '' },
   { name: 'Evan Henry', status: '', time: '12:00' },
