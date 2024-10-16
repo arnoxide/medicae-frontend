@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../styles/AddPatientModal.css';
+import config from '../../config';
 
 const AddPatientModal = ({ onClose, onAddPatient }) => {
   const [firstName, setFirstName] = useState('');
@@ -17,11 +18,10 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
   const [idNumber, setIdNumber] = useState('');
 
   const handleIdNumberChange = (value) => {
-    const cleanedValue = value.replace(/\D/g, ''); // Ensure only digits
+    const cleanedValue = value.replace(/\D/g, ''); 
     setIdNumber(cleanedValue);
 
     if (isSouthAfrican && cleanedValue.length === 13) {
-      // Parse date of birth from ID number
       const yearPrefix = cleanedValue[0] === '0' ? '20' : '19';
       const year = yearPrefix + cleanedValue.substring(0, 2);
       const month = cleanedValue.substring(2, 4);
@@ -34,7 +34,7 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post('http://localhost:5000/api/patients', {
+      const response = await axios.post(`${config.API_BASE_URL}/patients`, {
         firstName,
         lastName,
         dateOfBirth,

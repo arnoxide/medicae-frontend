@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AddFileModal from '../modals/AddFileModal';
+import config from '../../config';
 
 const PatientList = ({ patients }) => {
   const [patientFiles, setPatientFiles] = useState({});
@@ -16,15 +17,15 @@ const PatientList = ({ patients }) => {
         const fileStatuses = await Promise.all(
           patients.map(async (patient) => {
             try {
-              const response = await axios.get(`http://localhost:5000/api/patient-files/${patient.idNumber}`, {
+              const response = await axios.get(`${config.API_BASE_URL}/patient-files/${patient.idNumber}`, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
               });
-              return { [patient.idNumber]: !!response.data }; // File exists
+              return { [patient.idNumber]: !!response.data };
             } catch (error) {
               if (error.response && error.response.status === 404) {
-                return { [patient.idNumber]: false }; // File does not exist
+                return { [patient.idNumber]: false };
               }
               console.error('Error checking patient file:', error);
               return { [patient.idNumber]: false };
@@ -36,7 +37,7 @@ const PatientList = ({ patients }) => {
           return { ...acc, ...fileStatus };
         }, {});
 
-        console.log('Fetched patient files:', files); // Debugging line
+        console.log('Fetched patient files:', files);
         setPatientFiles(files);
       } catch (error) {
         console.error('Error fetching patient files:', error);

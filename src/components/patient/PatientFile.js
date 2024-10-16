@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddFileModal from '../modals/AddFileModal';
 import '../../styles/PatientFile.css';
+import config from '../../config';
 
 const PatientFile = ({ patientId, role }) => {
   const [file, setFile] = useState(null);
@@ -11,7 +12,7 @@ const PatientFile = ({ patientId, role }) => {
     const fetchFile = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`http://localhost:5000/api/patients/${patientId}/file`, {
+        const response = await axios.get(`${config.API_BASE_URL}/patients/${patientId}/file`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

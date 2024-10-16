@@ -7,6 +7,7 @@ import {
   DollarSign, Settings, HelpCircle, LogOut, MoreVertical,
   Edit, Trash2, ChevronRight, Plus
 } from 'lucide-react';
+import config from '../../config';
 
 const Sidebar = ({ activePage, setActivePage, onLogout }) => (
   <div className="sidebar">
@@ -173,7 +174,7 @@ const AdminDashboard = ({ onLogout }) => {
     const fetchStaff = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('http://localhost:5000/api/staff/all', {
+        const response = await axios.get(`${config.API_BASE_URL}/staff/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import config from '../../config';
 
 const ViewFile = () => {
-  const { patientId } = useParams(); // Use patientId to fetch data
+  const { patientId } = useParams(); 
   const [patientData, setPatientData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -11,7 +12,7 @@ const ViewFile = () => {
     const fetchPatientData = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`http://localhost:5000/api/patient-files/${patientId}`, {
+        const response = await axios.get(`${config.API_BASE_URL}/patient-files/${patientId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPatientData(response.data);

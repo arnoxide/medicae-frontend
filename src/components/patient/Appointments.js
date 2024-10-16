@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -20,7 +21,7 @@ const Appointments = () => {
   const fetchAppointments = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get('http://localhost:5000/api/appointments', {
+      const response = await axios.get(`${config.API_BASE_URL}/appointments`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +35,7 @@ const Appointments = () => {
   const fetchDoctors = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get('http://localhost:5000/api/staff/doctors', {
+      const response = await axios.get(`${config.API_BASE_URL}/staff/doctors`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -56,7 +57,7 @@ const Appointments = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:5000/api/appointments', formData, {
+      await axios.post(`${config.API_BASE_URL}/appointments`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

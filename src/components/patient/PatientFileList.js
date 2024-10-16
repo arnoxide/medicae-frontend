@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 const PatientFileList = ({ patients }) => {
   const [patientFiles, setPatientFiles] = useState({});
@@ -13,12 +14,12 @@ const PatientFileList = ({ patients }) => {
         const fileStatuses = await Promise.all(
           patients.map(async (patient) => {
             try {
-              const response = await axios.get(`http://localhost:5000/api/patient-files/${patient.idNumber}`, 
+              const response = await axios.get(`${config.API_BASE_URL}/patient-files/${patient.idNumber}`, 
               { headers: { Authorization: `Bearer ${token}` } });
 
-              return { [patient.idNumber]: !!response.data }; // File exists
+              return { [patient.idNumber]: !!response.data };
             } catch (error) {
-              return { [patient.idNumber]: false }; // File does not exist
+              return { [patient.idNumber]: false };
             }
           })
         );

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../styles/AddFileModal.css'; // Ensure you have the styles in place or adjust as needed
+import '../../styles/AddFileModal.css';
+import config from '../../config';
 
 const AddFileModal = ({ patient, onClose, onAddFile }) => {
-  // Initialize the form data with patient details
   const [fileData, setFileData] = useState({
     idNumber: patient.idNumber,
     fullName: {
@@ -65,7 +65,7 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
     const token = localStorage.getItem('token');
     console.log('Submitting file data:', fileData);
     try {
-      const response = await axios.post(`http://localhost:5000/api/patient-files`, fileData, {
+      const response = await axios.post(`${config.API_BASE_URL}/patient-files`, fileData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

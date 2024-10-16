@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import Appointments from '../patient/Appointments';
 import PatientFileList from '../patient/PatientFileList';
+import config from '../../config';
 
 const Sidebar = ({ activePage, setActivePage, onLogout }) => (
   <div className="sidebar">
@@ -182,7 +183,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
     const fetchStaff = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('http://localhost:5000/api/staff/all', {
+        const response = await axios.get(`${config.API_BASE_URL}/staff/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -201,7 +202,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
       const fetchPatients = async () => {
         const token = localStorage.getItem('token');
         try {
-          const response = await axios.get('http://localhost:5000/api/patients', {
+          const response = await axios.get(`${config.API_BASE_URL}/patients`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -228,7 +229,7 @@ const ReceptionistDashboard = ({ onLogout }) => {
   const handleViewFile = async (patientId) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`http://localhost:5000/api/patient-files/${patientId}`, {
+      const response = await axios.get(`${config.API_BASE_URL}/patient-files/${patientId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
