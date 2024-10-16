@@ -100,8 +100,8 @@ const AddStaffModal = ({ onClose, onAddStaff }) => {
           borderRadius: '8px',
           width: '90%',
           maxWidth: '600px',
-          maxHeight: '80vh', // Limit the modal height
-          overflow: 'hidden', // Hide overflow except the form scroll
+          maxHeight: '80vh',
+          overflow: 'hidden',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           position: 'relative',
         }}
@@ -114,8 +114,8 @@ const AddStaffModal = ({ onClose, onAddStaff }) => {
         </div>
         <div
           style={{
-            overflowY: 'auto', // Enable scrolling
-            maxHeight: 'calc(80vh - 60px)', // Adjust height for scrolling
+            overflowY: 'auto',
+            maxHeight: 'calc(80vh - 60px)', 
             paddingRight: '10px',
           }}
         >
