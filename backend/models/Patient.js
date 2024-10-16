@@ -29,7 +29,8 @@ const patientSchema = new mongoose.Schema({
   },
   hasFile: {
     type: Number,
-    default: 0 
+    default: 0
+  }
 });
 
 const Patient = mongoose.model('Patient', patientSchema);
