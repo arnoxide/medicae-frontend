@@ -1,30 +1,17 @@
 const PatientFile = require('../models/PatientFile');
 
 exports.createPatientFile = async (req, res) => {
-  const { patientId, fullName, gender, dateOfBirth, address, phoneNumber, emailAddress, emergencyContact, medicalHistory, familyHistory, consultationRecords, labResults, vitalSigns, insuranceAndBilling, additionalInformation, appointmentHistory } = req.body;
+  const { idNumber } = req.body;
 
   try {
-    const newPatientFile = new PatientFile({
-      patientId,
-      fullName,
-      gender,
-      dateOfBirth,
-      address,
-      phoneNumber,
-      emailAddress,
-      emergencyContact,
-      medicalHistory,
-      familyHistory,
-      consultationRecords,
-      labResults,
-      vitalSigns,
-      insuranceAndBilling,
-      additionalInformation,
-      appointmentHistory
-    });
+    const existingFile = await PatientFile.findOne({ idNumber });
+    if (existingFile) {
+      return res.status(400).json({ message: 'Patient file already exists for this ID number.' });
+    }
 
-    const savedPatientFile = await newPatientFile.save();
-    res.status(201).json(savedPatientFile);
+    const newFile = new PatientFile(req.body);
+    const savedFile = await newFile.save();
+    res.status(201).json(savedFile);
   } catch (error) {
     console.error('Error creating patient file:', error);
     res.status(500).json({ message: 'Error creating patient file', error });
@@ -32,29 +19,34 @@ exports.createPatientFile = async (req, res) => {
 };
 
 exports.getPatientFileById = async (req, res) => {
-  const { patientId } = req.params;
+  const { idNumber } = req.params;
+  console.log('Fetching file for ID:', idNumber);
 
   try {
-    const patientFile = await PatientFile.findOne({ patientId });
+    const patientFile = await PatientFile.findOne({ idNumber });
     if (!patientFile) {
+      console.log('Patient file not found for ID:', idNumber);
       return res.status(404).json({ message: 'Patient file not found' });
     }
+    console.log('Patient file found:', patientFile);
     res.status(200).json(patientFile);
   } catch (error) {
+    console.error('Error retrieving patient file:', error);
     res.status(500).json({ message: 'Error retrieving patient file', error });
   }
 };
+
 
 exports.updatePatientFileById = async (req, res) => {
   const { patientId } = req.params;
   const updates = req.body;
 
   try {
-    const updatedPatientFile = await PatientFile.findOneAndUpdate({ patientId }, updates, { new: true });
-    if (!updatedPatientFile) {
+    const updatedFile = await PatientFile.findOneAndUpdate({ patientId }, updates, { new: true });
+    if (!updatedFile) {
       return res.status(404).json({ message: 'Patient file not found' });
     }
-    res.status(200).json(updatedPatientFile);
+    res.status(200).json(updatedFile);
   } catch (error) {
     res.status(500).json({ message: 'Error updating patient file', error });
   }
@@ -64,8 +56,8 @@ exports.deletePatientFileById = async (req, res) => {
   const { patientId } = req.params;
 
   try {
-    const deletedPatientFile = await PatientFile.findOneAndDelete({ patientId });
-    if (!deletedPatientFile) {
+    const deletedFile = await PatientFile.findOneAndDelete({ patientId });
+    if (!deletedFile) {
       return res.status(404).json({ message: 'Patient file not found' });
     }
     res.status(200).json({ message: 'Patient file deleted successfully' });

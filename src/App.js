@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Topbar from './components/Topbar';
+import Topbar from './components/common/Topbar';
 import './App.css';
-import AdminDashboard from './components/AdminDashboard';
-import DoctorsDashboard from './components/DoctorsDashboard';
-import NursesDashboard from './components/NursesDashboard';
-import ReceptionistDashboard from './components/ReceptionistDashboard';
-import PatientsDashboard from './components/PatientsDashboard';
-import Login from './components/Login';
-import ForgotPassword from './components/ForgotPassword';
-import ResetPassword from './components/ResetPassword';
-import { LoaderProvider } from './components/LoaderContext';
-import Loader from './components/Loader';
-import PatientFile from './components/PatientFile';
+import AdminDashboard from './components/dashboard/AdminDashboard';
+import DoctorsDashboard from './components/dashboard/DoctorsDashboard';
+import NursesDashboard from './components/dashboard/NursesDashboard';
+import ReceptionistDashboard from './components/dashboard/ReceptionistDashboard';
+import PatientsDashboard from './components/dashboard/PatientsDashboard';
+import Login from './components/auth/Login';
+import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
+import { LoaderProvider } from './context/LoaderContext';
+import Loader from './components/common/Loader';
+import PatientFile from './components/patient/PatientFile';
+import ViewFile from './components/patient/ViewFile';
+import Appointments from './components/patient/Appointments';
+import PatientFileList from './components/patient/PatientFileList';
 
-const ProtectedRoute = ({ element }) => {
+const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem('token');
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 function App() {
@@ -58,14 +61,17 @@ function App() {
           )}
           <div className="content">
             <Routes>
-              <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard onLogout={handleLogout} />} />} />
-              <Route path="/doctor" element={<ProtectedRoute element={<DoctorsDashboard onLogout={handleLogout} />} />} />
-              <Route path="/nurse" element={<ProtectedRoute element={<NursesDashboard onLogout={handleLogout} />} />} />
-              <Route path="/receptionist" element={<ProtectedRoute element={<ReceptionistDashboard onLogout={handleLogout} />} />} />
-              <Route path="/patient" element={<ProtectedRoute element={<PatientsDashboard onLogout={handleLogout} />} />} />
-              <Route path="/patient-file" element={<ProtectedRoute element={<PatientFile onLogout={handleLogout} />} />} />
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/doctor" element={<ProtectedRoute><DoctorsDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/nurse" element={<ProtectedRoute><NursesDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/receptionist" element={<ProtectedRoute><ReceptionistDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/patient" element={<ProtectedRoute><PatientsDashboard onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/patient-files/:patientId" element={<ProtectedRoute><ViewFile /></ProtectedRoute>} />
+              <Route path="/patient-file-list" element={<ProtectedRoute><PatientFileList onLogout={handleLogout} /></ProtectedRoute>} />
+              <Route path="/appointments" element={<ProtectedRoute><Appointments onLogout={handleLogout} /></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route path="/" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />
               <Route path="*" element={<Navigate to={isLoggedIn ? `/${userRole.toLowerCase()}` : '/login'} />} />

@@ -1,17 +1,17 @@
 const express = require('express');
 const {
   createPatient,
-  getPatientById,
-  getAllPatients,   // Ensure this is correctly imported
+  getPatientByIdNumber,
+  getAllPatients,
   updatePatientById,
   deletePatientById
-} = require('../controllers/patientController'); // Ensure correct path to the controller
+} = require('../controllers/patientController');
 const router = express.Router();
 
 // Define routes
 router.post('/', createPatient);
-router.get('/', getAllPatients); // Ensure this route is defined
-router.get('/:id', getPatientById);
+router.get('/idNumber/:idNumber', getPatientByIdNumber);
+router.get('/', getAllPatients);
 router.put('/:id', updatePatientById);
 router.delete('/:id', deletePatientById);
 

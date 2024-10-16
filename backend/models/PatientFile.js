@@ -1,27 +1,26 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-
-const patientFileSchema = new Schema({
-  patientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
+const patientFileSchema = new mongoose.Schema({
+  patientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: false },
+  idNumber: { type: String, required: true, unique: true },
   fullName: {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true }
+    firstName: { type: String, required: false },
+    lastName: { type: String, required: false }
   },
-  gender: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
+  gender: { type: String, required: false },
+  dateOfBirth: { type: Date, required: false },
   address: {
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zipCode: { type: String, required: true }
+    street: { type: String, required: false },
+    city: { type: String, required: false },
+    state: { type: String, required: false },
+    zipCode: { type: String, required: false }
   },
-  phoneNumber: { type: String, required: true },
-  emailAddress: { type: String, required: true },
+  phoneNumber: { type: String, required: false },
+  emailAddress: { type: String, required: false },
   emergencyContact: {
-    name: { type: String, required: true },
-    relation: { type: String, required: true },
-    phoneNumber: { type: String, required: true }
+    name: { type: String, required: false },
+    relation: { type: String, required: false },
+    phoneNumber: { type: String, required: false }
   },
   medicalHistory: {
     pastMedicalConditions: { type: [String], default: [] },
