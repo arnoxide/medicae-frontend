@@ -63,7 +63,7 @@ const AddFileModal = ({ patient, onClose, onAddFile }) => {
     e.preventDefault();
   
     const token = localStorage.getItem('token');
-    console.log('Submitting file data:', fileData); // Log the data being sent
+    console.log('Submitting file data:', fileData);
     try {
       const response = await axios.post(`http://localhost:5000/api/patient-files`, fileData, {
         headers: {

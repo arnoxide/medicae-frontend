@@ -110,7 +110,7 @@ const AddPatientModal = ({ onClose, onAddPatient }) => {
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
               required
-              readOnly={isSouthAfrican} // Make it read-only for SA ID automatic population
+              readOnly={isSouthAfrican}
             />
           </div>
           <div className="form-group">

@@ -67,7 +67,7 @@ const AddStaffModal = ({ onClose, onAddStaff }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      onAddStaff(response.data); // Use response data
+      onAddStaff(response.data);
       onClose();
     } catch (error) {
       if (error.response && error.response.status === 409) {
