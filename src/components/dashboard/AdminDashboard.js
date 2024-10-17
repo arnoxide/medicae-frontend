@@ -3,9 +3,9 @@ import axios from 'axios';
 import AddStaffModal from '../modals/AddStaffModal';
 import '../../styles/AdminDashboard.css';
 import {
-  Home, Users, Calendar, Stethoscope, Building, Briefcase,
-  DollarSign, Settings, HelpCircle, LogOut, MoreVertical,
-  Edit, Trash2, ChevronRight, Plus
+  Home, Users, Calendar, Stethoscope, Building,
+  Briefcase, Settings, HelpCircle, LogOut, MoreVertical,
+  Edit, Trash2, Plus
 } from 'lucide-react';
 import config from '../../config';
 
@@ -47,7 +47,7 @@ const Header = ({ onAddStaffClick }) => (
   </header>
 );
 
-const DoctorStats = () => (
+const DoctorStats = ({ totalDoctors, activeDoctors, inactiveDoctors }) => (
   <div className="card doctor-stats">
     <div className="card-header">
       <h3>Doctor Stats</h3>
@@ -55,9 +55,9 @@ const DoctorStats = () => (
     </div>
     <div className="stat-container">
       {[
-        { label: 'Total doctor', value: '300k', icon: <Users size={16} /> },
-        { label: 'Active doctor', value: '200k', icon: <Users size={16} /> },
-        { label: 'Inactive doctor', value: '100k', icon: <Users size={16} /> },
+        { label: 'Total doctor', value: totalDoctors, icon: <Users size={16} /> },
+        { label: 'Active doctor', value: activeDoctors, icon: <Users size={16} /> },
+        { label: 'Inactive doctor', value: inactiveDoctors, icon: <Users size={16} /> },
       ].map(({ label, value, icon }) => (
         <div key={label} className="stat-item">
           <div className="stat-icon">{icon}</div>
@@ -188,6 +188,11 @@ const AdminDashboard = ({ onLogout }) => {
     fetchStaff();
   }, []);
 
+  // Calculate doctor statistics
+  const totalDoctors = staff.filter(({ role }) => role === 'Doctor').length;
+  const activeDoctors = staff.filter(({ role, status }) => role === 'Doctor' && status === 'active').length;
+  const inactiveDoctors = staff.filter(({ role, status }) => role === 'Doctor' && status === 'inactive').length;
+
   const handleAddStaff = (newStaff) => {
     setStaff([...staff, newStaff]);
   };
@@ -199,7 +204,11 @@ const AdminDashboard = ({ onLogout }) => {
         <Header onAddStaffClick={() => setShowModal(true)} />
         <div className="dashboard-grid">
           <div className="left-column">
-            <DoctorStats />
+            <DoctorStats
+              totalDoctors={totalDoctors}
+              activeDoctors={activeDoctors}
+              inactiveDoctors={inactiveDoctors}
+            />
             <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
             <Clinics />
           </div>

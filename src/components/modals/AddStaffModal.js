@@ -68,12 +68,15 @@ const AddStaffModal = ({ onClose, onAddStaff }) => {
         },
       });
       onAddStaff(response.data);
+      alert('Staff added successfully!');
       onClose();
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setError('Email already exists. Please use a different email.');
+        alert('Email already exists. Please use a different email.');
       } else {
         console.error('Error creating staff:', error);
+        alert('An error occurred while adding staff. Please try again.');
       }
     }
   };

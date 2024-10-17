@@ -66,7 +66,7 @@ const PatientFiles = () => {
 
   const handleAuthSubmit = (e) => {
     e.preventDefault();
-    if (authNumber === '12345') { // Replace with actual authentication logic
+    if (authNumber === '12345') { 
       setIsAccessGranted(true);
       setIsAuthModalOpen(false);
     } else {
@@ -75,7 +75,7 @@ const PatientFiles = () => {
   };
 
   const handleFingerprintScan = () => {
-    // Simulate fingerprint scan
+    
     setForm({
       ...form,
       fingerprint: 'FingerprintScanned'
@@ -182,6 +182,7 @@ const PatientFiles = () => {
           </table>
         )}
       </div>
+      {/* aatl435p  BZV710  n2rvtwl4 GMZ027 */}
       <Modal
         isOpen={isAuthModalOpen}
         onRequestClose={() => setIsAuthModalOpen(false)}
