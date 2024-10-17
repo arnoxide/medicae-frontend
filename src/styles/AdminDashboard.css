@@ -227,3 +227,45 @@
     color: #6b7280;
     margin-right: 5px;
   }
+
+  .help-support {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .help-support h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e40af;
+    margin-bottom: 15px;
+  }
+  
+  .help-support p {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 15px;
+  }
+  
+  .help-support ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .help-support li {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #4b5563;
+  }
+  
+  .help-support a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  
+  .help-support a:hover {
+    text-decoration: underline;
+  }
+  

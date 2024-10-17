@@ -22,10 +22,6 @@ const Sidebar = ({ activePage, setActivePage, onLogout }) => (
         { name: 'Patients', icon: <Users size={20} /> },
         { name: 'Patients File', icon: <FileText size={20} /> },
         { name: 'Appointments', icon: <Calendar size={20} /> },
-        { name: 'Doctors', icon: <Stethoscope size={20} /> },
-        { name: 'Departments', icon: <Building size={20} /> },
-        { name: 'Staff', icon: <Briefcase size={20} /> },
-        { name: 'Settings', icon: <Settings size={20} /> },
         { name: 'Help & support', icon: <HelpCircle size={20} /> },
       ].map(({ name, icon }) => (
         <li
@@ -52,7 +48,7 @@ const Header = ({ onAddClick, buttonText }) => (
   </header>
 );
 
-const DoctorStats = () => (
+const DoctorStats = ({ totalDoctors, activeDoctors, inactiveDoctors }) => (
   <div className="card doctor-stats">
     <div className="card-header">
       <h3>Doctor Stats</h3>
@@ -60,9 +56,9 @@ const DoctorStats = () => (
     </div>
     <div className="stat-container">
       {[
-        { label: 'Total doctor', value: '300k', icon: <Users size={16} /> },
-        { label: 'Active doctor', value: '200k', icon: <Users size={16} /> },
-        { label: 'Inactive doctor', value: '100k', icon: <Users size={16} /> },
+        { label: 'Total doctor', value: totalDoctors, icon: <Users size={16} /> },
+        { label: 'Active doctor', value: activeDoctors, icon: <Users size={16} /> },
+        { label: 'Inactive doctor', value: inactiveDoctors, icon: <Users size={16} /> },
       ].map(({ label, value, icon }) => (
         <div key={label} className="stat-item">
           <div className="stat-icon">{icon}</div>
@@ -169,6 +165,27 @@ const StaffList = ({ staff, activeTab, setActiveTab }) => (
   </div>
 );
 
+const HelpAndSupport = () => (
+  <div className="help-support">
+    <h2>Help & Support</h2>
+    <p>If you need assistance, please contact our support team:</p>
+    <ul>
+      <li>Email: support@medicae.com</li>
+      <li>Phone: 1-800-555-HELP</li>
+      <li>Live Chat: Available 24/7 via the chat icon in the bottom right corner.</li>
+    </ul>
+    <h3>Frequently Asked Questions</h3>
+    <ul>
+      <li>How do I reset my password?</li>
+      <p>Go to the settings page and click "Reset Password".</p>
+      <li>How can I update my profile information?</li>
+      <p>Navigate to your profile page and click "Edit Profile".</p>
+    </ul>
+    <p>For further assistance, please visit our <a href="/faq">FAQ page</a>.</p>
+  </div>
+);
+
+
 const ReceptionistDashboard = ({ onLogout }) => {
   const [showModal, setShowModal] = useState(false);
   const [patients, setPatients] = useState([]);
@@ -259,6 +276,10 @@ const ReceptionistDashboard = ({ onLogout }) => {
     alert('File added successfully!');
   };
 
+  const totalDoctors = staff.filter(({ role }) => role === 'Doctor').length;
+  const activeDoctors = staff.filter(({ role, status }) => role === 'Doctor' && status === 'active').length;
+  const inactiveDoctors = staff.filter(({ role, status }) => role === 'Doctor' && status === 'inactive').length;
+
   return (
     <div className="dashboard">
       <Sidebar activePage={activePage} setActivePage={setActivePage} onLogout={onLogout} />
@@ -270,7 +291,11 @@ const ReceptionistDashboard = ({ onLogout }) => {
             {activePage === 'Overview' && (
               <div className="dashboard-grid">
                 <div className="left-column">
-                  <DoctorStats />
+                  <DoctorStats
+              totalDoctors={totalDoctors}
+              activeDoctors={activeDoctors}
+              inactiveDoctors={inactiveDoctors}
+            />
                   <DoctorsJoined doctors={staff.filter(s => s.role === 'Doctor')} />
                   <Clinics />
                 </div>
@@ -294,7 +319,9 @@ const ReceptionistDashboard = ({ onLogout }) => {
             {activePage === 'Appointments' && (
               <Appointments />
             )}
-            {/* Other pages */}
+             {activePage === 'Help & support' && (
+              <HelpAndSupport />
+            )}
           </>
         )}
       </div>

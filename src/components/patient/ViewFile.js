@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import config from '../../config';
+import '../../styles/ViewFile.css';
 
 const ViewFile = () => {
   const { patientId } = useParams(); 
