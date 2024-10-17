@@ -13,6 +13,7 @@ import {
   Settings, HelpCircle, LogOut, MoreVertical,
   Edit, Trash2, Plus, FileText
 } from 'lucide-react';
+import config from '../../config';
 
 const Sidebar = ({ activePage, setActivePage, onLogout }) => (
   <div className="sidebar">
