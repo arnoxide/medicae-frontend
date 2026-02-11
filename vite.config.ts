@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
@@ -16,7 +17,10 @@ export default defineConfig(({ mode }) => {
     // ✅ Fixes broken asset paths (very important for Vercel)
     base: '/',
 
-    plugins: [react()],
+    plugins: [
+      react(),
+      tailwindcss(),
+    ],
 
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
