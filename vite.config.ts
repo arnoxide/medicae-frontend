@@ -71,7 +71,7 @@ export default defineConfig(({ mode }) => {
 
     build: {
       target: 'esnext',
-      outDir: 'dist', // ✅ Vercel expects this folder
+      outDir: 'build', // ✅ Vercel expects this folder based on the error message
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
